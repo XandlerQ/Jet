@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://qel4p3nmb8sc"]
+
+[ext_resource type="Script" path="res://scenes/object/stellar/physical/physical_body.gd" id="1_2ymm3"]
+[ext_resource type="PackedScene" uid="uid://bfbgdvphsa2i3" path="res://scenes/object/property/property_integrity.tscn" id="1_ut8hb"]
+[ext_resource type="PackedScene" uid="uid://dnru4b3ugw7gw" path="res://scenes/object/property/property_resistance.tscn" id="2_5r55b"]
+
+[node name="PhysicalBody" type="RigidBody2D"]
+gravity_scale = 0.0
+script = ExtResource("1_2ymm3")
+
+[node name="PropertyIntegrity" parent="." instance=ExtResource("1_ut8hb")]
+
+[node name="PropertyResistance" parent="." instance=ExtResource("2_5r55b")]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]

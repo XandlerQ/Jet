@@ -1,0 +1,29 @@
+[gd_scene load_steps=10 format=3 uid="uid://b57f0155dawp3"]
+
+[ext_resource type="PackedScene" uid="uid://qel4p3nmb8sc" path="res://scenes/object/stellar/physical/physical_body.tscn" id="1_o4jh6"]
+[ext_resource type="Script" path="res://scenes/object/stellar/physical/asteroid/asteroid.gd" id="2_4qxqv"]
+[ext_resource type="Texture2D" uid="uid://d0bj3y37p8exb" path="res://resources/sprites/objects/asteroids/8x8/asteroid_8_A.png" id="3_fdu11"]
+[ext_resource type="Shader" path="res://shaders/color_palette_mapping_shader.gdshader" id="3_scxvl"]
+[ext_resource type="Texture2D" uid="uid://4oaw7ieylxg0" path="res://resources/sprites/objects/asteroids/8x8/asteroid_8_A_n.png" id="4_j4kgg"]
+[ext_resource type="Texture2D" uid="uid://buuiye35fmc7c" path="res://resources/sprites/objects/asteroids/palette_asteroid_base_orange.png" id="4_rt3bu"]
+[ext_resource type="Texture2D" uid="uid://bio50132v730p" path="res://resources/sprites/objects/asteroids/8x8/asteroid_8_A_s.png" id="5_v2bjd"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hoe24"]
+shader = ExtResource("3_scxvl")
+shader_parameter/palette = ExtResource("4_rt3bu")
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_hm1t2"]
+diffuse_texture = ExtResource("3_fdu11")
+normal_texture = ExtResource("4_j4kgg")
+specular_texture = ExtResource("5_v2bjd")
+
+[node name="Asteroid" instance=ExtResource("1_o4jh6")]
+script = ExtResource("2_4qxqv")
+
+[node name="CollisionPolygon2D" parent="." index="2"]
+polygon = PackedVector2Array(-3, 4, -3, -2, -1, -2, -1, -3, 2, -3, 2, -2, 3, -2, 3, 2, 2, 2, 2, 3, 1, 3, 1, 4)
+
+[node name="Sprite2D" parent="." index="3"]
+texture_filter = 1
+material = SubResource("ShaderMaterial_hoe24")
+texture = SubResource("CanvasTexture_hm1t2")

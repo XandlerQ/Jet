@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dnru4b3ugw7gw"]
+
+[ext_resource type="Script" path="res://scenes/object/property/property_resistance.gd" id="1_fjv4d"]
+
+[node name="PropertyResistance" type="Node2D"]
+script = ExtResource("1_fjv4d")

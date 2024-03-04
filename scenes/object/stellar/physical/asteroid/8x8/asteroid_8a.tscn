@@ -1,0 +1,16 @@
+[gd_scene load_steps=6 format=3 uid="uid://bsejtn2q50tox"]
+
+[ext_resource type="PackedScene" uid="uid://b57f0155dawp3" path="res://scenes/object/stellar/physical/asteroid/asteroid.tscn" id="1_1afhk"]
+[ext_resource type="Texture2D" uid="uid://d0bj3y37p8exb" path="res://resources/sprites/objects/asteroids/8x8/asteroid_8_A.png" id="2_p6kq4"]
+[ext_resource type="Texture2D" uid="uid://4oaw7ieylxg0" path="res://resources/sprites/objects/asteroids/8x8/asteroid_8_A_n.png" id="3_6aciu"]
+[ext_resource type="Texture2D" uid="uid://bio50132v730p" path="res://resources/sprites/objects/asteroids/8x8/asteroid_8_A_s.png" id="4_66qyv"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_dodhn"]
+diffuse_texture = ExtResource("2_p6kq4")
+normal_texture = ExtResource("3_6aciu")
+specular_texture = ExtResource("4_66qyv")
+
+[node name="Asteroid8A" instance=ExtResource("1_1afhk")]
+
+[node name="Sprite2D" parent="." index="3"]
+texture = SubResource("CanvasTexture_dodhn")
