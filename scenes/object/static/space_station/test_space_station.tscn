@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://cnsqrkhqogqcl"]
+
+[ext_resource type="TileSet" uid="uid://xopj02mdk806" path="res://scenes/object/static/space_station/repo/tileset_space_station.tres" id="1_7j3dx"]
+[ext_resource type="Material" uid="uid://cl53if4bnkoyn" path="res://materials/color_palette_mapping_shader_material.tres" id="1_o4lkk"]
+
+[node name="TestSpaceStation" type="StaticBody2D"]
+
+[node name="TileMap" type="TileMap" parent="."]
+texture_filter = 1
+material = ExtResource("1_o4lkk")
+tile_set = ExtResource("1_7j3dx")
+format = 2
+layer_0/tile_data = PackedInt32Array(-65538, 458752, 0, -131071, 524288, 0, -65537, 131072, 0, -131072, 131072, 0, -2, 0, 0, 65534, 458752, 1, 1, 524288, 1, -65535, 65536, 0, 65535, 262144, 3, 0, 393216, 3, -1, 327680, 5, -65536, 327680, 5, -65534, 0, 8, -65533, 131072, 8, -131068, 458752, 0, -131067, 524288, 0, 4, 458752, 1, 5, 524288, 1, -65532, 0, 2, -65531, 65536, 2, -196608, 458752, 8, -65530, 655360, 12)

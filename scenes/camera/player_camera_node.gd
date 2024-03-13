@@ -1,9 +1,26 @@
-extends Camera2D;
-class_name PlayerCamera;
+extends Node2D;
+class_name PlayerCameraNode;
 
-@onready var fPlayer = get_node("../Player");
-var fCameraPosition: Vector2;
-var fOvershoot: Vector2 = Vector2(0.3, 0.3);
+#region signals
+
+#endregion
+
+#region fields
+# Node position
+var dockPosition: Vector2;
+# Overshoot vector
+@export var overshoot: Vector2 = Vector2(0.3, 0.3);
+# Camera zoom
+@export var zoom: Vector2 = Vector2(4., 4.);
+# Player node
+@onready var player: CharacterBody2D = $"../ShipPlayer";
+# Camera node
+@onready var camera: Camera2D = $PlayerCamera;
+#endregion
+
+#region methods
+func _ready():
+	camera.zoom = zoom;
 
 static func lerp_overshoot(origin: float, target: float, weight: float, overshoot: float) -> float:
 	var distance: float = (target - origin) * weight;
@@ -27,6 +44,8 @@ static func lerp_overshoot_v(from: Vector2, to: Vector2, weight: float, overshoo
 	
 	return Vector2(x,y);
 
-func _process(_delta):
-	self.fCameraPosition = PlayerCamera.lerp_overshoot_v(self.position, fPlayer.position, 0.2, self.fOvershoot);
-	self.position = self.fCameraPosition;
+func _physics_process(_delta):
+	dockPosition = PlayerCameraNode.lerp_overshoot_v(global_position, player.global_position, 0.2, overshoot);
+	global_position = dockPosition;
+#endregion
+

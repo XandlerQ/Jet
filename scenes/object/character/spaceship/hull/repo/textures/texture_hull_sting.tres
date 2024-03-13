@@ -1,0 +1,10 @@
+[gd_resource type="CanvasTexture" load_steps=4 format=3 uid="uid://bywsy71qn02tt"]
+
+[ext_resource type="Texture2D" uid="uid://b35g3bl67g17u" path="res://resources/sprites/objects/spaseships/hulls/medium/m_hull_sting.png" id="1_7jenh"]
+[ext_resource type="Texture2D" uid="uid://dw758kwknnxj3" path="res://resources/sprites/objects/spaseships/hulls/medium/m_hull_sting_n.png" id="2_7grdj"]
+[ext_resource type="Texture2D" uid="uid://bvqcasdh4qo0w" path="res://resources/sprites/objects/spaseships/hulls/medium/m_hull_sting_s.png" id="3_ur884"]
+
+[resource]
+diffuse_texture = ExtResource("1_7jenh")
+normal_texture = ExtResource("2_7grdj")
+specular_texture = ExtResource("3_ur884")

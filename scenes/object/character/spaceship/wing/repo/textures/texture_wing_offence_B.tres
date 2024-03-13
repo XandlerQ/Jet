@@ -1,0 +1,10 @@
+[gd_resource type="CanvasTexture" load_steps=4 format=3 uid="uid://dh3otemb1m7yn"]
+
+[ext_resource type="Texture2D" uid="uid://cnnjsfl4pqljb" path="res://resources/sprites/objects/spaseships/wings/small/s_wing_offence_typeB.png" id="1_1qgkd"]
+[ext_resource type="Texture2D" uid="uid://b1xyg6jmsv1p8" path="res://resources/sprites/objects/spaseships/wings/small/s_wing_offence_typeB_n.png" id="2_dytk0"]
+[ext_resource type="Texture2D" uid="uid://dwipg15d8xan0" path="res://resources/sprites/objects/spaseships/wings/small/s_wing_offence_typeB_s.png" id="3_1j07a"]
+
+[resource]
+diffuse_texture = ExtResource("1_1qgkd")
+normal_texture = ExtResource("2_dytk0")
+specular_texture = ExtResource("3_1j07a")

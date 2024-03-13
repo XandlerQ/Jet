@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dgqwg7b0uen0o"]
+
+[ext_resource type="Script" path="res://scenes/object/character/spaceship/ship_component_stats.gd" id="1_hcjmw"]
+
+[node name="ShipComponentStats" type="Node2D"]
+script = ExtResource("1_hcjmw")

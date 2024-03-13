@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://bha43kpuh1bjp"]
+[gd_scene load_steps=3 format=3 uid="uid://bha43kpuh1bjp"]
 
 [ext_resource type="Script" path="res://scenes/object/object_properties/object_property_integrity.gd" id="1_0jr5o"]
+[ext_resource type="PackedScene" uid="uid://bvdpn3mmfdli3" path="res://scenes/object/object_properties/object_property_resistance.tscn" id="2_6175b"]
 
 [node name="ObjectPropertyIntegrity" type="Node2D"]
 script = ExtResource("1_0jr5o")
+
+[node name="ObjectPropertyResistance" parent="." instance=ExtResource("2_6175b")]

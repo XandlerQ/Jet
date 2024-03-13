@@ -1,0 +1,24 @@
+[gd_scene load_steps=8 format=3 uid="uid://bdnmvarsyjoib"]
+
+[ext_resource type="PackedScene" uid="uid://ctjl550ufhdon" path="res://scenes/object/character/spaceship/ship_component.tscn" id="1_2adcl"]
+[ext_resource type="Material" uid="uid://cl53if4bnkoyn" path="res://materials/color_palette_mapping_shader_material.tres" id="2_uhibp"]
+[ext_resource type="Texture2D" uid="uid://c1meec1yp44us" path="res://scenes/object/character/spaceship/hull/repo/textures/texture_hull_offcut.tres" id="3_a2bpw"]
+[ext_resource type="Script" path="res://scenes/object/character/spaceship/hull/hull.gd" id="3_gaf0e"]
+[ext_resource type="Resource" uid="uid://ca1sp0lejpon6" path="res://scenes/object/character/spaceship/wing/repo/resources/integrity/resource_test_wing_integriy.tres" id="5_8vly8"]
+[ext_resource type="Resource" uid="uid://bbkpc3hggwb8q" path="res://scenes/object/character/spaceship/wing/repo/resources/resistance/resource_test_wing_resistance.tres" id="6_jpgc2"]
+[ext_resource type="Resource" uid="uid://dprqthytxxai1" path="res://scenes/object/character/spaceship/hull/repo/resources/stats/resource_test_hull_stats.tres" id="7_d8qur"]
+
+[node name="Hull" instance=ExtResource("1_2adcl")]
+texture_filter = 1
+material = ExtResource("2_uhibp")
+texture = ExtResource("3_a2bpw")
+script = ExtResource("3_gaf0e")
+
+[node name="ObjectPropertyIntegrity" parent="." index="0"]
+integrityResource = ExtResource("5_8vly8")
+
+[node name="ObjectPropertyResistance" parent="." index="1"]
+resistanceResource = ExtResource("6_jpgc2")
+
+[node name="ShipComponentStats" parent="." index="2"]
+shipComponentStatsResource = ExtResource("7_d8qur")

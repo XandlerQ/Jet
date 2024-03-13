@@ -1,0 +1,26 @@
+[gd_scene load_steps=6 format=3 uid="uid://cegsy3u8u87sb"]
+
+[ext_resource type="Script" path="res://scenes/object/character/spaceship/ship.gd" id="1_yaemh"]
+[ext_resource type="Shape2D" uid="uid://bmtxirg7f2awb" path="res://scenes/object/character/spaceship/hull/repo/collision_shapes/polygon_hull_offcut.tres" id="2_4iri7"]
+[ext_resource type="Shape2D" uid="uid://b50jrbhowrxqx" path="res://scenes/object/character/spaceship/wing/repo/collision_shapes/polygon_wing_soarer_B.tres" id="3_gnrru"]
+[ext_resource type="PackedScene" uid="uid://cyq5wb5aviyn0" path="res://scenes/object/character/spaceship/wing/wing.tscn" id="4_yq5ox"]
+[ext_resource type="PackedScene" uid="uid://bdnmvarsyjoib" path="res://scenes/object/character/spaceship/hull/hull.tscn" id="5_k0s23"]
+
+[node name="Ship" type="CharacterBody2D"]
+motion_mode = 1
+script = ExtResource("1_yaemh")
+
+[node name="HullCollisionShape" type="CollisionShape2D" parent="."]
+shape = ExtResource("2_4iri7")
+
+[node name="WingCollisionShape" type="CollisionShape2D" parent="."]
+shape = ExtResource("3_gnrru")
+
+[node name="Hull" parent="." instance=ExtResource("5_k0s23")]
+
+[node name="Wing" parent="." instance=ExtResource("4_yq5ox")]
+
+[node name="BoostTimer" type="Timer" parent="."]
+
+[connection signal="stats_values_changed" from="Hull" to="." method="_on_hull_stats_values_changed"]
+[connection signal="stats_values_changed" from="Wing" to="." method="_on_wing_stats_values_changed"]

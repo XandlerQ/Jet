@@ -1,0 +1,10 @@
+[gd_resource type="CanvasTexture" load_steps=4 format=3 uid="uid://cme46lonvsig4"]
+
+[ext_resource type="Texture2D" uid="uid://cioqur05tx7of" path="res://resources/sprites/objects/spaseships/hulls/big/b_hull_nighthunter.png" id="1_legv5"]
+[ext_resource type="Texture2D" uid="uid://heosh2akn0s" path="res://resources/sprites/objects/spaseships/hulls/big/b_hull_nighthunter_n.png" id="2_uicyw"]
+[ext_resource type="Texture2D" uid="uid://bodii8e8lr3io" path="res://resources/sprites/objects/spaseships/hulls/big/b_hull_nighthunter_s.png" id="3_nw65l"]
+
+[resource]
+diffuse_texture = ExtResource("1_legv5")
+normal_texture = ExtResource("2_uicyw")
+specular_texture = ExtResource("3_nw65l")

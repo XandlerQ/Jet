@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ResourceShipComponentStats" load_steps=2 format=3 uid="uid://dprqthytxxai1"]
+
+[ext_resource type="Script" path="res://scenes/object/character/spaceship/resource_ship_component_stats.gd" id="1_v6i1f"]
+
+[resource]
+script = ExtResource("1_v6i1f")
+acceleration = 150.0
+baseRotationSpeed = 0.5
+additionalRotationSpeed = 20.0
+fuel = 20.0
+boosterPower = 5.0
+boosterCooldown = 2.0
+drag = 0.01

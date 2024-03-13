@@ -1,17 +1,38 @@
-[gd_scene load_steps=3 format=3 uid="uid://brj8fkcwm0pw8"]
+[gd_scene load_steps=7 format=3 uid="uid://brj8fkcwm0pw8"]
 
-[ext_resource type="PackedScene" uid="uid://ddcjlqnfmmmp5" path="res://scenes/camera/player_camera.tscn" id="1_b41x3"]
+[ext_resource type="PackedScene" uid="uid://cxtdpla181ft7" path="res://assets/smoother/smoother.tscn" id="1_iegks"]
 [ext_resource type="Texture2D" uid="uid://ci6qqxoyqohex" path="res://resources/sprites/backgrounds/test_space_background.png" id="2_ffqy3"]
+[ext_resource type="PackedScene" uid="uid://cnsqrkhqogqcl" path="res://scenes/object/static/space_station/test_space_station.tscn" id="3_6piym"]
+[ext_resource type="Texture2D" uid="uid://dddsgw00ybegd" path="res://resources/sprites/light/49465361-1a53ec80-f806-11e8-9dd3-ae09aed0de3f.png" id="4_ndt0i"]
+[ext_resource type="PackedScene" uid="uid://cpdfmnb147sd1" path="res://scenes/object/character/player/ship_player.tscn" id="5_auwrt"]
+[ext_resource type="PackedScene" uid="uid://dnccwytjqfnyv" path="res://scenes/camera/player_camera_node.tscn" id="6_iwm1y"]
 
 [node name="TestLevel" type="Node2D"]
 
-[node name="PlayerCamera" parent="." instance=ExtResource("1_b41x3")]
+[node name="Smoother" parent="." instance=ExtResource("1_iegks")]
 
-[node name="Player" type="Node2D" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = -1
 
-[node name="SpaceBackground" type="Sprite2D" parent="."]
+[node name="SpaceBackground" type="Sprite2D" parent="CanvasLayer"]
 texture_filter = 1
 texture_repeat = 2
 texture = ExtResource("2_ffqy3")
 region_enabled = true
 region_rect = Rect2(0, 0, 5000, 5000)
+
+[node name="TestSpaceStation" parent="." instance=ExtResource("3_6piym")]
+position = Vector2(80, -44)
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+texture_filter = 1
+color = Color(0.419608, 0.419608, 0.419608, 1)
+
+[node name="Light" type="PointLight2D" parent="."]
+position = Vector2(160, -135)
+texture = ExtResource("4_ndt0i")
+
+[node name="ShipPlayer" parent="." instance=ExtResource("5_auwrt")]
+position = Vector2(96, 15)
+
+[node name="PlayerCameraNode" parent="." instance=ExtResource("6_iwm1y")]

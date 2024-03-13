@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="ResourcePropertyIntegrity" load_steps=2 format=3 uid="uid://ca1sp0lejpon6"]
+
+[ext_resource type="Script" path="res://scenes/object/resources/resource_property_integrity.gd" id="1_guntq"]
+
+[resource]
+script = ExtResource("1_guntq")
+durability = 100.0

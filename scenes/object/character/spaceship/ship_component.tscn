@@ -1,0 +1,18 @@
+[gd_scene load_steps=5 format=3 uid="uid://ctjl550ufhdon"]
+
+[ext_resource type="Script" path="res://scenes/object/character/spaceship/ship_component.gd" id="1_0stpi"]
+[ext_resource type="PackedScene" uid="uid://bha43kpuh1bjp" path="res://scenes/object/object_properties/object_property_integrity.tscn" id="1_p5h7o"]
+[ext_resource type="PackedScene" uid="uid://bvdpn3mmfdli3" path="res://scenes/object/object_properties/object_property_resistance.tscn" id="2_kysl0"]
+[ext_resource type="PackedScene" uid="uid://dgqwg7b0uen0o" path="res://scenes/object/character/spaceship/ship_component_stats.tscn" id="3_e1cmv"]
+
+[node name="ShipComponent" type="Sprite2D"]
+script = ExtResource("1_0stpi")
+
+[node name="ObjectPropertyIntegrity" parent="." instance=ExtResource("1_p5h7o")]
+
+[node name="ObjectPropertyResistance" parent="." instance=ExtResource("2_kysl0")]
+
+[node name="ShipComponentStats" parent="." instance=ExtResource("3_e1cmv")]
+
+[connection signal="integrity_value_changed" from="ObjectPropertyIntegrity" to="ShipComponentStats" method="_on_object_property_integrity_integrity_value_changed"]
+[connection signal="stats_values_changed" from="ShipComponentStats" to="." method="_on_ship_component_stats_stats_values_changed"]

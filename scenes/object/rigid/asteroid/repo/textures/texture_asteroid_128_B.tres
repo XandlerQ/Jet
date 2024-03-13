@@ -1,0 +1,11 @@
+[gd_resource type="CanvasTexture" load_steps=4 format=3 uid="uid://bhvfmlrqm543w"]
+
+[ext_resource type="Texture2D" uid="uid://bbchfuiijd8d6" path="res://resources/sprites/objects/asteroids/128x128/asteroid_128_B.png" id="1_r12y7"]
+[ext_resource type="Texture2D" uid="uid://dfii2lnfcmbfm" path="res://resources/sprites/objects/asteroids/128x128/asteroid_128_B_n.png" id="2_ead3e"]
+[ext_resource type="Texture2D" uid="uid://drdqwc0uy8i6r" path="res://resources/sprites/objects/asteroids/128x128/asteroid_128_B_s.png" id="3_w5br8"]
+
+[resource]
+diffuse_texture = ExtResource("1_r12y7")
+normal_texture = ExtResource("2_ead3e")
+specular_texture = ExtResource("3_w5br8")
+texture_filter = 1

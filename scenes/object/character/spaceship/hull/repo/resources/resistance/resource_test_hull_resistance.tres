@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ResourcePropertyResistance" load_steps=2 format=3 uid="uid://bbkpc3hggwb8q"]
+
+[ext_resource type="Script" path="res://scenes/object/resources/resource_property_resistance.gd" id="1_5a5ga"]
+
+[resource]
+script = ExtResource("1_5a5ga")
+physicalResistance = 0.2
+alphaResistance = 0.0
+betaResistance = 0.0
+gammaResistance = 0.0
