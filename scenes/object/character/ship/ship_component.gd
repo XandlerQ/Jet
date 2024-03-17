@@ -18,6 +18,12 @@ signal stats_values_changed();
 func _on_ship_component_stats_stats_values_changed() -> void:
 	stats_values_changed.emit();
 
+func set_canvas_texture_path(path: String) -> void:
+	set_canvas_texture(load(path));
+
+func set_canvas_texture(resource: CanvasTexture) -> void:
+	texture = resource;
+
 func set_integrity_resource_path(path: String) -> void:
 	propertyIntegrityNode.set_integrity_resource_path(path);
 

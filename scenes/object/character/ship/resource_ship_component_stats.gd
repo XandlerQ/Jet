@@ -16,4 +16,6 @@ class_name ResourceShipComponentStats;
 @export var boosterCooldown: float;
 # Drag value contributed to spaceship stats by ship component
 @export var drag: float;
+# Mass value contributed to spaceship stats by ship component
+@export var mass: float;
 #endregion

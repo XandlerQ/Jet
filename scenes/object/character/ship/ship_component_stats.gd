@@ -23,6 +23,8 @@ var boosterPower: float = 0.0;
 var boosterCooldown: float = 0.0;
 # Drag value contributed to spaceship stats by ship component
 var drag: float = 0.0;
+# Mass value contributed to spaceship stats by ship component
+var mass: float = 0.0;
 # Component integrity node
 @onready var componentIntegrityNode: ObjectPropertyIntegrity = $"../ObjectPropertyIntegrity";
 #endregion
@@ -43,6 +45,7 @@ func update():
 		boosterPower = currentIntegrityFractionProportional * shipComponentStatsResource.boosterPower;
 		boosterCooldown = currentIntegrityFractionReverseProportional * shipComponentStatsResource.boosterCooldown;
 		drag = currentIntegrityFractionReverseProportional * shipComponentStatsResource.drag;
+		mass = shipComponentStatsResource.mass;
 		stats_values_changed.emit();
 
 func update_no_signal():
@@ -56,6 +59,7 @@ func update_no_signal():
 		boosterPower = currentIntegrityFractionProportional * shipComponentStatsResource.boosterPower;
 		boosterCooldown = currentIntegrityFractionReverseProportional * shipComponentStatsResource.boosterCooldown;
 		drag = currentIntegrityFractionReverseProportional * shipComponentStatsResource.drag;
+		mass = shipComponentStatsResource.mass;
 
 func set_stats_resource_path(path: String) -> void:
 	set_stats_resource(load(path));

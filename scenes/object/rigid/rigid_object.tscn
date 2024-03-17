@@ -5,12 +5,13 @@
 [ext_resource type="PackedScene" uid="uid://bvdpn3mmfdli3" path="res://scenes/object/object_properties/object_property_resistance.tscn" id="2_4ise6"]
 
 [node name="RigidObject" type="RigidBody2D"]
+gravity_scale = 0.0
 script = ExtResource("1_45ygg")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 
 [node name="ObjectPropertyIntegrity" parent="." instance=ExtResource("1_h1kcy")]
 

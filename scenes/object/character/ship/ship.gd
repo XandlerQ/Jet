@@ -20,6 +20,8 @@ var boosterPower: float = 0;
 var boosterCooldown: float = 0;
 # Drag
 var drag: float = 0;
+# Mass
+var mass: float = 0;
 # Hull node
 @onready var hull: Hull = $"Hull";
 # Wing node
@@ -28,10 +30,10 @@ var drag: float = 0;
 var thrust: float = 0;
 # Boost timer
 @onready var boostTimer: Timer = $BoostTimer;
-# Hull collision shape node
-@onready var hullCollisionShape: CollisionShape2D = $HullCollisionShape;
-# Wing collision shape node
-@onready var wingCollisionShape: CollisionShape2D = $WingCollisionShape;
+# Hull collision polygon node
+@onready var hullCollisionPolygon: CollisionPolygon2D = $HullCollisionPolygon;
+# Wing collision polygon node
+@onready var wingCollisionPolygon: CollisionPolygon2D = $WingCollisionPolygon;
 #endregion
 
 #region methods
@@ -40,26 +42,41 @@ func _ready():
 	hull.rotation = PI/2;
 	wing.rotation = PI/2;
 	# Setup hull and wing collision shapes initial rotation
-	hullCollisionShape.rotation = PI/2;
-	wingCollisionShape.rotation = PI/2;
+	hullCollisionPolygon.rotation = PI/2;
+	wingCollisionPolygon.rotation = PI/2;
 	
 	recalculate_ship_stats();
 	
-		# Setup booster timer
+	ShipComponentManager.set_ship_hull(self, 3);
+	ShipComponentManager.set_ship_wing(self, 3);
+	
+	# Setup booster timer
 	boostTimer.one_shot = true;
 	boostTimer.wait_time = boosterCooldown;
+
+func set_hull_canvas_texture_path(path: String) -> void:
+	hull.set_canvas_texture_path(path);
+
+func set_hull_canvas_texture(resource: CanvasTexture) -> void:
+	hull.set_canvas_texture(resource);
 
 func set_hull_collision_shape_path(path: String) -> void:
 	set_hull_collision_shape(load(path));
 
 func set_hull_collision_shape(collisionShape: ConvexPolygonShape2D) -> void:
-	hullCollisionShape.shape = collisionShape;
+	hullCollisionPolygon.polygon = collisionShape.points;
+
+func set_wing_canvas_texture_path(path: String) -> void:
+	wing.set_canvas_texture_path(path);
+
+func set_wing_canvas_texture(resource: CanvasTexture) -> void:
+	wing.set_canvas_texture(resource);
 
 func set_wing_collision_shape_path(path: String) -> void:
 	set_wing_collision_shape(load(path));
 
 func set_wing_collision_shape(collisionShape: ConvexPolygonShape2D) -> void:
-	wingCollisionShape.shape = collisionShape;
+	wingCollisionPolygon.polygon = collisionShape.points;
 
 func set_hull_integrity_resource_path(path: String) -> void:
 	hull.set_integrity_resource_path(path);
@@ -105,6 +122,7 @@ func recalculate_ship_stats():
 	boosterPower = hull.componentStatsNode.boosterPower + wing.componentStatsNode.boosterPower;
 	boosterCooldown = hull.componentStatsNode.boosterCooldown + wing.componentStatsNode.boosterCooldown;
 	drag = hull.componentStatsNode.drag + wing.componentStatsNode.drag;
+	mass = hull.componentStatsNode.mass + wing.componentStatsNode.mass;
 
 func add_to_thrust(value: float) -> void:
 	thrust += value;
@@ -177,8 +195,7 @@ func rotate_to_target(delta: float, target: Vector2):
 
 func apply_accelerations(delta: float):
 	var velocityModule: float = velocity.length();
-	
-	velocity += 
+	velocity += delta * (acceleration * thrust * Vector2.RIGHT.rotated(rotation) - drag * velocityModule * velocity)
 #endregion
 
 func _on_hull_stats_values_changed():

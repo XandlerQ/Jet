@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cbkwri10nawak"]
+
+[ext_resource type="Script" path="res://scenes/object/character/ship/ship_component_manager.gd" id="1_g2n2x"]
+
+[node name="ShipComponentManager" type="Node2D"]
+script = ExtResource("1_g2n2x")

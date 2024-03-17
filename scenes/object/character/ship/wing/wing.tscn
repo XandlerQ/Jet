@@ -1,0 +1,22 @@
+[gd_scene load_steps=7 format=3 uid="uid://cyq5wb5aviyn0"]
+
+[ext_resource type="PackedScene" uid="uid://ctjl550ufhdon" path="res://scenes/object/character/ship/ship_component.tscn" id="1_ku74v"]
+[ext_resource type="Material" uid="uid://cl53if4bnkoyn" path="res://materials/color_palette_mapping_shader_material.tres" id="2_4bsv3"]
+[ext_resource type="Script" path="res://scenes/object/character/ship/wing/wing.gd" id="3_8xjoj"]
+[ext_resource type="Resource" uid="uid://ca1sp0lejpon6" path="res://scenes/object/character/ship/wing/repo/resources/integrity/resource_test_wing_integriy.tres" id="4_o25m2"]
+[ext_resource type="Resource" uid="uid://bbkpc3hggwb8q" path="res://scenes/object/character/ship/wing/repo/resources/resistance/resource_test_wing_resistance.tres" id="5_dwoq2"]
+[ext_resource type="Resource" uid="uid://q4kvxpuvcvw2" path="res://scenes/object/character/ship/wing/repo/resources/stats/resource_test_wing_stats.tres" id="6_po5p8"]
+
+[node name="Wing" instance=ExtResource("1_ku74v")]
+texture_filter = 1
+material = ExtResource("2_4bsv3")
+script = ExtResource("3_8xjoj")
+
+[node name="ObjectPropertyIntegrity" parent="." index="0"]
+integrityResource = ExtResource("4_o25m2")
+
+[node name="ObjectPropertyResistance" parent="." index="1"]
+resistanceResource = ExtResource("5_dwoq2")
+
+[node name="ShipComponentStats" parent="." index="2"]
+shipComponentStatsResource = ExtResource("6_po5p8")

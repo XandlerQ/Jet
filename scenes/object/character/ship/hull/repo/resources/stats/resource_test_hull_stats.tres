@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="ResourceShipComponentStats" load_steps=2 format=3 uid="uid://dprqthytxxai1"]
 
-[ext_resource type="Script" path="res://scenes/object/character/spaceship/resource_ship_component_stats.gd" id="1_v6i1f"]
+[ext_resource type="Script" path="res://scenes/object/character/ship/resource_ship_component_stats.gd" id="1_v6i1f"]
+
 
 [resource]
 script = ExtResource("1_v6i1f")

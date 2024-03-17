@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cpdfmnb147sd1"]
 
-[ext_resource type="PackedScene" uid="uid://cegsy3u8u87sb" path="res://scenes/object/character/spaceship/ship.tscn" id="1_2dlpu"]
+[ext_resource type="PackedScene" uid="uid://cegsy3u8u87sb" path="res://scenes/object/character/ship/ship.tscn" id="1_2dlpu"]
 [ext_resource type="Script" path="res://scenes/object/character/player/ship_player.gd" id="2_rwhbl"]
 
 [node name="ShipPlayer" instance=ExtResource("1_2dlpu")]

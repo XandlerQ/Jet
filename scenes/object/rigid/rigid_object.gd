@@ -17,8 +17,8 @@ class_name RigidObject;
 @export var shape: ConvexPolygonShape2D = null;
 # Sprite2D node
 @onready var sprite2D: Sprite2D = $Sprite2D;
-# Collision shape node
-@onready var collisionShape: CollisionShape2D = $CollisionShape2D;
+# Collision polygon node
+@onready var collisionPolygon: CollisionPolygon2D = $CollisionPolygon2D;
 #endregion
 
 #region methods
@@ -33,8 +33,8 @@ func apply_texture() -> void:
 		sprite2D.texture = texture;
 
 func apply_shape() -> void:
-	if collisionShape != null:
-		collisionShape.shape = shape;
+	if shape != null:
+		collisionPolygon.polygon = shape.points;
 
 func apply_resources() -> void:
 	apply_texture();
