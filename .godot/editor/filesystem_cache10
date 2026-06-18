@@ -1,5 +1,5 @@
-63f7b34db8d8cdea90c76aacccf841ec
-::res://::1780496198
+78098b89c88a74ebe8c20117b8754620
+::res://::1781794731
 icon.svg::CompressedTexture2D::8906905340973758656::1711731815::1711732069::1::::<><><>0<>0<>9a09c682f88dbedbf0aebd1282561bb4<>res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex::
 README.md::TextFile::-1::1711731815::0::1::::<><><>0<>0<><>::
 ::res://project_notes/::1726573561
@@ -172,10 +172,10 @@ testPin.png::CompressedTexture2D::1476537303598402437::1724774501::1726321749::1
 ::res://scenes/camera/::1759326018
 player_camera_node.gd::GDScript::8399658831274556546::1726139913::0::1::::PlayerCameraNode<>Node2D<><>0<>0<><>::
 player_camera_node.tscn::PackedScene::8076007785675484289::1726922427::0::1::::<><><>0<>0<><>::res://scenes/camera/player_camera_node.gd
-::res://scenes/level/::1759326254
+::res://scenes/level/::1780496384
 test_level.gd::GDScript::6785085101764931919::1726416572::0::1::::TestLevel<>Node<><>0<>0<><>::
-test_level.gdshader::Shader::8893175433929481273::1759326254::0::1::::<><><>0<>0<><>::
-test_level.tscn::PackedScene::3600223544396733713::1728752436::0::1::::<><><>0<>0<><>::res://scenes/level/test_level.gd<>uid://ci6qqxoyqohex::::res://resources/sprites/backgrounds/test_space_background.png<>uid://cnsqrkhqogqcl::::res://scenes/object/static/space_station/test_space_station.tscn<>uid://dddsgw00ybegd::::res://resources/sprites/light/49465361-1a53ec80-f806-11e8-9dd3-ae09aed0de3f.png<>uid://dnccwytjqfnyv::::res://scenes/camera/player_camera_node.tscn<>uid://barhuleymqofx::::res://scenes/object/rigid/asteroid/asteroid.tscn<>uid://cpdfmnb147sd1::::res://scenes/object/character/player/ship_player.tscn
+test_level.gdshader::Shader::8893175433929481273::1780496384::0::1::::<><><>0<>0<><>::
+test_level.tscn::PackedScene::3600223544396733713::1780496384::0::1::::<><><>0<>0<><>::uid://c3w0miry4usrv::::res://scenes/level/test_level.gd<>uid://ci6qqxoyqohex::::res://resources/sprites/backgrounds/test_space_background.png<>uid://cnsqrkhqogqcl::::res://scenes/object/static/space_station/test_space_station.tscn<>uid://dddsgw00ybegd::::res://resources/sprites/light/49465361-1a53ec80-f806-11e8-9dd3-ae09aed0de3f.png<>uid://dnccwytjqfnyv::::res://scenes/camera/player_camera_node.tscn<>uid://barhuleymqofx::::res://scenes/object/rigid/asteroid/asteroid.tscn<>uid://cpdfmnb147sd1::::res://scenes/object/character/player/ship_player.tscn
 ::res://scenes/object/::1726684701
 ::res://scenes/object/character/::1759326018
 character_object.gd::GDScript::8455393193713805174::1727286322::0::1::::CharacterObject<>CharacterBody2D<><>0<>0<><>::
@@ -324,9 +324,9 @@ static_object.gd::GDScript::595399924871529547::1723733055::0::1::::StaticObject
 static_object.tscn::PackedScene::5293752727502289149::1717099651::0::1::::<><><>0<>0<><>::res://scenes/object/static/static_object.gd
 ::res://scenes/object/static/space_station/::1726923400
 test_space_station.tscn::PackedScene::5723457501427407967::1726923400::0::1::::<><><>0<>0<><>::uid://xopj02mdk806::::res://scenes/object/static/space_station/repo/tileset_space_station.tres<>uid://borxf6l3hv0ew::::res://scenes/object/static/space_station/repo/materials/material_space_station_test_palette.tres
-::res://scenes/object/static/space_station/repo/::1759326254
+::res://scenes/object/static/space_station/repo/::1780496384
 texture_tileset_space_station.tres::CanvasTexture::3271253666330906363::1728755133::0::1::::<><><>0<>0<><>::uid://bvc6asa1suqyw::::res://resources/sprites/objects/spacestation/space_station_tileset.png<>uid://b7fvq03bo0nj::::res://resources/sprites/objects/spacestation/space_station_tileset_n.png<>uid://box8fei1mix1u::::res://resources/sprites/objects/spacestation/space_station_tileset_s.png
-tileset_space_station.tres::TileSet::1644172874611361717::1759326254::0::1::::<><><>0<>0<><>::uid://bmuvcm4ip68y6::::res://scenes/object/static/space_station/repo/texture_tileset_space_station.tres
+tileset_space_station.tres::TileSet::1644172874611361717::1780496384::0::1::::<><><>0<>0<><>::uid://bmuvcm4ip68y6::::res://scenes/object/static/space_station/repo/texture_tileset_space_station.tres
 ::res://scenes/object/static/space_station/repo/materials/::1728755133
 material_space_station_test_palette.tres::ShaderMaterial::3405565982746827482::1728755133::0::1::::<><><>0<>0<><>::res://shaders/color_palette_mapping_shader.gdshader<>uid://buj0iiie88t3w::::res://resources/sprites/objects/spacestation/space_station_mask_palette_test.png
 ::res://scenes/projectile/::1759326018
@@ -352,5 +352,5 @@ indicator.tscn::PackedScene::1046757188407492163::1726684554::0::1::::<><><>0<>0
 ::res://script_templates/Node/::1759326018
 template_node_defined_regions.gd::GDScript::2752489728933140153::1711731866::0::1::::ClassName<>Node<><>0<>0<><>::
 template_resource_field_initializer.gd::GDScript::1388547665892899641::1726675785::0::1::::ResourceName<>Resource<><>0<>0<><>::
-::res://shaders/::1759326254
-color_palette_mapping_shader.gdshader::Shader::8022445543530424996::1759326254::0::1::::<><><>0<>0<><>::
+::res://shaders/::1780496384
+color_palette_mapping_shader.gdshader::Shader::8022445543530424996::1780496384::0::1::::<><><>0<>0<><>::

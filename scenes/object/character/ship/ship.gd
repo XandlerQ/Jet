@@ -35,6 +35,7 @@ var overchargeThrustMultiplier: float = 1.6;
 # Target thrust
 var targetThrust: float = 0:
 	set = set_target_thrust;
+
 # Target thrust states
 enum targetThrustStates {
 	ZERO,
@@ -43,6 +44,7 @@ enum targetThrustStates {
 	OFWD,
 	OBWD
 }
+
 # Rotation power
 var rotationPower: float = 15000;
 # Rotation thrust
@@ -68,9 +70,6 @@ func _ready() -> void:
 	# Setup booster timer
 	boostTimer.one_shot = true;
 	boostTimer.wait_time = boosterCooldown;
-
-func get_collision_virtual_rotational_speed(collisionDistance: float, collisionDirection: Vector2) -> Vector2:
-	return rotational_speed_hat_function(collisionDistance) * rotationSpeed * collisionDistance * collisionDirection.rotated(PI/2.) + 2 * collisionDistance * rotationThrust * rotationPower * collisionDirection.rotated(PI/2.) / 15000;
 
 func normalize_target_thrust() -> void:
 	var maxThrust: float = forwardThrust * overchargeThrustMultiplier;

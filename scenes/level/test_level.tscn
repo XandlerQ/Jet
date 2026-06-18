@@ -50,7 +50,7 @@ region_rect = Rect2(0, 0, 5000, 5000)
 position = Vector2(80, -44)
 
 [node name="Light" type="PointLight2D" parent="." unique_id=2139675248]
-position = Vector2(229, -6)
+position = Vector2(232.31, -100.135)
 texture = ExtResource("4_ndt0i")
 height = 20.0
 

@@ -1,4 +1,8 @@
 res://scenes/level/test_level.tscn
-res://shaders/color_palette_mapping_shader.gdshader
 res://scenes/object/static/space_station/repo/tileset_space_station.tres
+res://shaders/color_palette_mapping_shader.gdshader
 res://scenes/level/test_level.gdshader
+res://scenes/object/character/character_object.gd
+res://scenes/object/rigid/asteroid/asteroid.gd
+res://scenes/object/character/ship/ship.gd
+res://scenes/object/rigid/rigid_object.gd

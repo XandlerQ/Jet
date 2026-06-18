@@ -21,6 +21,14 @@ var mass: float = 15:
 var linearSize: float = 4.;
 # Moment of inertia
 var momentOfInertia: float = 1.;
+
+# Coefficient of restitution
+# Value from 0 to 1 that determines the ratio of conserved collision velocity
+var c: float = 0.7;
+
+# Friction / roughness coefficient
+var mu: float = 0.4;
+
 # Speed, velocity normed to units
 var speed: Vector2 = Vector2.ZERO:
 	set = set_speed;
@@ -88,7 +96,23 @@ func set_shape_by_path(path: String) -> void:
 func update_velocity() -> void:
 	velocity = speed * 8;
 
+
 #region impulse and collision
+func cross_vector_vector(a: Vector2, b: Vector2) -> float:
+	return a.x * b.y - a.y * b.x;
+
+func angular_velocity_to_linear_velocity(rotationSpeedValue: float, point: Vector2) -> Vector2:
+	return rotationSpeedValue * point.rotated(PI/2.);
+
+func get_point_velocity_relative_normed(point: Vector2) -> Vector2:
+	return speed + angular_velocity_to_linear_velocity(rotationSpeed, point);
+
+func get_collision_tangent(collisionNormal: Vector2, relativeVelocity: Vector2) -> Vector2:
+	var tangentNonNormed: Vector2 = relativeVelocity - relativeVelocity.dot(collisionNormal) * collisionNormal;
+	if tangentNonNormed.length() == 0.:
+		return Vector2.ZERO;
+	return tangentNonNormed.normalized();
+
 func apply_central_impulse(impulse: Vector2):
 	add_to_speed(impulse / mass);
 
@@ -98,35 +122,26 @@ func apply_impulse_point_relative(impulse: Vector2, point: Vector2):
 
 # Applies impulse at point of object, point given in units (pixels / 8)
 func apply_impulse_point_relative_normed(impulse: Vector2, point: Vector2):
-	var lever: float = point.length();
-	if lever == 0.:
-		apply_central_impulse(impulse);
-		return;
-	var pointDirection: Vector2 = point / lever;
-	
-	var centralImpulse: Vector2 = impulse.dot(pointDirection) * pointDirection;
-	var rotationalImpulse: float = impulse.dot(pointDirection.rotated(PI/2.));
-	
-	apply_central_impulse(centralImpulse);
-	rotationSpeed += rotationalImpulse * lever / momentOfInertia;
+	apply_central_impulse(impulse);
+	rotationSpeed += cross_vector_vector(point, impulse) / momentOfInertia;
 
-# Applies impulse at point of object, point given in pixels with rotational impulse capped with RIC
+# Applies impulse at point of object, point given in pixels with impulse capped with RIC
 func apply_impulse_point_relative_rotational_impulse_capped(impulse: Vector2, point: Vector2):
 	apply_impulse_point_relative_normed_rotational_impulse_capped(impulse, point / 8.);
 
 # Applies impulse at point of object, point given in units (pixels / 8)
 # with rotational impulse capped with RIC
 func apply_impulse_point_relative_normed_rotational_impulse_capped(impulse: Vector2, point: Vector2):
-	var lever: float = point.length();
-	if lever == 0.:
+	var rotationalImpulse: float = cross_vector_vector(point, impulse);
+	if rotationalImpulse == 0.:
 		apply_central_impulse(impulse);
 		return;
-	var pointDirection: Vector2 = point / lever;
 	
-	var centralImpulse: Vector2 = impulse.dot(pointDirection) * pointDirection;
-	var rotationalImpulse: float = clamp(impulse.dot(pointDirection.rotated(PI/2.)), -RIC, RIC);
-	apply_central_impulse(centralImpulse);
-	rotationSpeed += rotationalImpulse * lever / momentOfInertia;
+	var rotationalImpulseCapped: float = clamp(rotationalImpulse, -RIC, RIC);
+	var impulseCapped: Vector2 = impulse * rotationalImpulseCapped / rotationalImpulse;
+	
+	apply_central_impulse(impulseCapped);
+	rotationSpeed += rotationalImpulseCapped / momentOfInertia;
 
 # Applies impulse at local point, point given in pixels
 func apply_impulse_point_local(impulse: Vector2, pointLocal: Vector2):
@@ -150,86 +165,147 @@ func apply_impulse_point_global_rotational_impulse_capped(impulse: Vector2, poin
 	var pointRelative: Vector2 = pointGlobal - position;
 	apply_impulse_point_relative_rotational_impulse_capped(impulse, pointRelative);
 
-# Returns normalizing value for rotational vurtual speed
-# calculated during collision
-func rotational_speed_hat_function(collisionDistance: float) -> float:
-	var argument: float = collisionDistance / linearSize;
-	var value: float = 0;
-	value = 1.8 * exp(-5. * (argument - 0.75) * (argument - 0.75));
-	return value;
+func get_collider_mass(collider) -> float:
+	if collider is CharacterObject:
+		return collider.mass;
+	if collider is RigidObject:
+		return collider.mass;
+	return INF;
 
-# Function that returnes virtual linear speed calculated during collision
-# Possibly redefined by children for different behaviour
-func get_collision_virtual_linear_speed() -> Vector2:
-	return speed;
+func get_collider_moment_of_inertia(collider) -> float:
+	if collider is CharacterObject:
+		return collider.momentOfInertia;
+	if collider is RigidObject:
+		return collider.get_collision_moment_of_inertia();
+	return INF;
 
-# Function that returnes virtual rotational speed calculated during collision
-# Possibly redefined by children for different behaviour
-func get_collision_virtual_rotational_speed(collisionDistance: float, collisionDirection: Vector2) -> Vector2:
-	return rotational_speed_hat_function(collisionDistance) * rotationSpeed * collisionDistance * collisionDirection.rotated(PI/2.);
+func get_collider_restitution(collider) -> float:
+	if collider is CharacterObject:
+		return collider.c;
+	if collider is RigidObject:
+		return collider.c;
+	return c;
+
+func get_collider_mu(collider) -> float:
+	if collider is CharacterObject:
+		return collider.mu;
+	if collider is RigidObject:
+		return collider.mu;
+	return mu;
+
+func get_collider_point_velocity_relative_normed(collider, point: Vector2, collision: KinematicCollision2D) -> Vector2:
+	if collider is CharacterObject:
+		return collider.get_point_velocity_relative_normed(point);
+	if collider is RigidObject:
+		return collider.get_point_velocity_relative_normed(point);
+	return collision.get_collider_velocity() / 8.;
+
+func apply_impulse_to_collider(collider, impulse: Vector2, pointGlobal: Vector2):
+	if collider is CharacterObject:
+		collider.apply_impulse_point_global(-impulse, pointGlobal);
+		return;
+	if collider is RigidObject:
+		collider.apply_impulse_point_global(-impulse, pointGlobal);
+		return;
+
+func handle_static_collision(collision: KinematicCollision2D):
+	# Get collision normal vector
+	var collisionNormal: Vector2 = collision.get_normal();
+	# Get local collision position
+	var collisionPosition: Vector2 = (collision.get_position() - global_position) / 8.;
+	
+	# Relative velocity at collision point
+	var relativeVelocity: Vector2 = get_point_velocity_relative_normed(collisionPosition) - collision.get_collider_velocity() / 8.;
+	var relativeVelocityN: float = relativeVelocity.dot(collisionNormal);
+	if relativeVelocityN >= 0.:
+		return;
+	
+	# Calculate tangent
+	var collisionTangent: Vector2 = get_collision_tangent(collisionNormal, relativeVelocity);
+	
+	# Calculate impulse
+	var collisionPositionCrossNormal: float = cross_vector_vector(collisionPosition, collisionNormal);
+	var impulseDenominator: float = (
+		1. / mass
+		+ collisionPositionCrossNormal * collisionPositionCrossNormal / momentOfInertia
+	);
+	
+	if impulseDenominator == 0.:
+		return;
+	
+	var J: float = -(1. + c) * min(relativeVelocityN, 0.) / impulseDenominator;
+	var deltaImpulse: Vector2 = J * (collisionNormal - mu * collisionTangent);
+	
+	# Apply impulse
+	apply_impulse_point_relative_normed_rotational_impulse_capped(deltaImpulse, collisionPosition);
+
+func handle_rigid_collision(collision: KinematicCollision2D):
+	# Get collider
+	var collider = collision.get_collider();
+	# Get collision normal vector
+	var collisionNormal: Vector2 = collision.get_normal();
+	# Get global collision position
+	var collisionPositionGlobal: Vector2 = collision.get_position();
+	# Get local collision positions
+	var collisionPosition: Vector2 = (collisionPositionGlobal - global_position) / 8.;
+	var colliderCollisionPosition: Vector2 = (collisionPositionGlobal - collider.global_position) / 8.;
+	
+	# Get collider kinetic properties
+	var colliderMass: float = get_collider_mass(collider);
+	var colliderMomentOfInertia: float = get_collider_moment_of_inertia(collider);
+	if colliderMass == INF or colliderMomentOfInertia == INF:
+		return;
+	
+	# Relative velocity at collision point
+	var pointVelocity: Vector2 = get_point_velocity_relative_normed(collisionPosition);
+	var colliderPointVelocity: Vector2 = get_collider_point_velocity_relative_normed(collider, colliderCollisionPosition, collision);
+	var relativeVelocity: Vector2 = pointVelocity - colliderPointVelocity;
+	var relativeVelocityN: float = relativeVelocity.dot(collisionNormal);
+	if relativeVelocityN >= 0.:
+		return;
+	
+	# Calculate tangent
+	var collisionTangent: Vector2 = get_collision_tangent(collisionNormal, relativeVelocity);
+	
+	# Take average restitution and roughness
+	var averageC: float = (c + get_collider_restitution(collider)) / 2.;
+	var averageMu: float = (mu + get_collider_mu(collider)) / 2.;
+	
+	# Calculate impulse
+	var collisionPositionCrossNormal: float = cross_vector_vector(collisionPosition, collisionNormal);
+	var colliderCollisionPositionCrossNormal: float = cross_vector_vector(colliderCollisionPosition, collisionNormal);
+	var impulseDenominator: float = (
+		1. / mass
+		+ 1. / colliderMass
+		+ collisionPositionCrossNormal * collisionPositionCrossNormal / momentOfInertia
+		+ colliderCollisionPositionCrossNormal * colliderCollisionPositionCrossNormal / colliderMomentOfInertia
+	);
+	
+	if impulseDenominator == 0.:
+		return;
+	
+	var J: float = -(1. + averageC) * min(relativeVelocityN, 0.) / impulseDenominator;
+	var deltaImpulse: Vector2 = J * (collisionNormal - averageMu * collisionTangent);
+	
+	# Apply impulse to this object
+	apply_impulse_point_relative_normed_rotational_impulse_capped(deltaImpulse, collisionPosition);
+	
+	# Apply impulse to collider
+	apply_impulse_to_collider(collider, deltaImpulse, collisionPositionGlobal);
 
 func handle_collision(collision: KinematicCollision2D):
 	# Get collider
 	var collider = collision.get_collider();
-	# Impulse conservation ratio
-	# Value from 0 to 1 that determines the ratio of conserved kinetic energy
-	var conservationRatio: float = 0.7;
-	# Get collision normal vector
-	var collisionNormal: Vector2 = collision.get_normal();
-	# Get collision tangent vector
-	var collisionTangent: Vector2 = collisionNormal.rotated(PI/2.);
-	# Get local collision position
-	var collisionPosition: Vector2 = (collision.get_position() - global_position) / 8.;
-	# Distance to collision point
-	var collisionDistance: float = collisionPosition.length();
-	# Normed vector to collision point
-	var collisionDirection: Vector2 = collisionPosition / collisionDistance;
 	
-	# Introduce virtual rotational speed
-	var virtualRotationalSpeed: Vector2 = get_collision_virtual_rotational_speed(collisionDistance, collisionDirection);
-	#var rotationalSpeed: Vector2 = rotational_speed_hat_function(collisionDistance) * (momentOfInertia * rotationSpeed / mass) * collisionDirection.rotated(PI/2.);
-	# Introduce virtual velocities
-	var virtualSpeed: Vector2 = get_collision_virtual_linear_speed() + virtualRotationalSpeed;
-	var virtualSpeedN: float = virtualSpeed.dot(collisionNormal);
-	var virtualSpeedT: float = virtualSpeed.dot(collisionTangent);
-	
-	# Define applied impulse
-	var deltaImpulseN: float = 0.;
-	var deltaImpulseT: float = 0.;
-	var deltaImpulse: Vector2 = Vector2.ZERO;
-	
-	# If collider is static (StaticBody2D or TileMap)
+	# If collider is static, handle as infinite mass object
 	if collider is StaticBody2D or collider is TileMap:
-		# Handle object collision
-		# Calculate applied impulse
-		deltaImpulseN = - 2. * mass * virtualSpeedN;
-		deltaImpulseT = 0.;
-		deltaImpulse = deltaImpulseN * collisionNormal + deltaImpulseT * collisionTangent;
-		# Apply conservation ratio
-		deltaImpulse *= conservationRatio;
-		# Apply impulse
-		apply_impulse_point_relative_normed_rotational_impulse_capped(deltaImpulse, collisionPosition);
-	# If collider is rigid
-	if collider is RigidBody2D or collider is RigidObject:
-		# Get collider kinetic properties
-		var colliderMass: float = collider.mass;
-		var colliderSpeed: Vector2 = collision.get_collider_velocity() / 8;
-		var colliderSpeedN: float = colliderSpeed.dot(collisionNormal);
-		var colliderSpeedT: float = colliderSpeed.dot(collisionTangent);
-		# Handle object collision
-		# Calculate applied impulse
-		deltaImpulseN = mass * 2. * colliderMass * (colliderSpeedN - virtualSpeedN) / (mass + colliderMass);
-		deltaImpulseT = 0.;
-		deltaImpulse = deltaImpulseN * collisionNormal + deltaImpulseT * collisionTangent;
-		# Apply conservation ratio
-		deltaImpulse *= conservationRatio;
-		# Apply impulse
-		apply_impulse_point_relative_normed_rotational_impulse_capped(deltaImpulse, collisionPosition);
-		
-		# Handle collider collision
-		# Apply impulse in the opposite direction
-		print(collision.get_position() - collider.global_position)
-		collider.apply_impulse(-8 * deltaImpulse, collision.get_position() - collider.global_position);
+		handle_static_collision(collision);
+		return;
+	
+	# If collider is rigid, handle with two-body impulse equation
+	if collider is RigidObject or collider is CharacterObject:
+		handle_rigid_collision(collision);
+		return;
 #endregion
 
 #endregion
