@@ -1,0 +1,6 @@
+ResourceTextureShapeMap
+ResourceTextureShapeMapAsteroid
+ConvexPolygonShape2D
+ShaderMaterial
+CanvasTexture
+ResourceProjectile

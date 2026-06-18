@@ -1,0 +1,42 @@
+[gd_scene load_steps=5 format=3 uid="uid://dsgpry4ua8nyf"]
+
+[ext_resource type="PackedScene" uid="uid://tmcofr23guf3" path="res://scenes/object/character/ship/ship.tscn" id="1_rykwt"]
+[ext_resource type="Script" path="res://scenes/object/character/player/ship_player.gd" id="2_ur3af"]
+[ext_resource type="PackedScene" uid="uid://2d2vgwpl273m" path="res://scenes/object/character/player/properties/player_input.tscn" id="3_etbdd"]
+
+[sub_resource type="GDScript" id="GDScript_lbu1t"]
+script/source = "extends CollisionPolygon2D;
+class_name CollisionPolygonEx;
+
+#region signals
+
+#endregion
+
+#region fields
+# Collision shape resource
+@export var convexPolygonShape: ConvexPolygonShape2D = null;
+#endregion
+
+#region methods
+func _ready() -> void:
+	if convexPolygonShape != null:
+		apply_shape();
+
+func apply_shape() -> void:
+	polygon = convexPolygonShape.points;
+
+func set_shape(shape: ConvexPolygonShape2D) -> void:
+	convexPolygonShape = shape;
+	apply_shape();
+#endregion
+"
+
+[node name="ShipPlayer" instance=ExtResource("1_rykwt")]
+script = ExtResource("2_ur3af")
+
+[node name="CollisionPolygonEx" parent="." index="1"]
+script = SubResource("GDScript_lbu1t")
+
+[node name="PlayerInput" parent="." index="3" instance=ExtResource("3_etbdd")]
+
+[connection signal="mouseMoved" from="PlayerInput" to="." method="_on_player_input_mouse_moved"]

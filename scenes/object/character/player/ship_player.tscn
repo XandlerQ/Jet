@@ -1,7 +1,37 @@
-[gd_scene load_steps=3 format=3 uid="uid://cpdfmnb147sd1"]
+[gd_scene load_steps=8 format=3 uid="uid://cpdfmnb147sd1"]
 
-[ext_resource type="PackedScene" uid="uid://cegsy3u8u87sb" path="res://scenes/object/character/ship/ship.tscn" id="1_2dlpu"]
-[ext_resource type="Script" path="res://scenes/object/character/player/ship_player.gd" id="2_rwhbl"]
+[ext_resource type="Script" uid="uid://clghgbo458ry7" path="res://scenes/object/character/player/ship_player.gd" id="2_rwhbl"]
+[ext_resource type="Shape2D" uid="uid://camiusbws3vds" path="res://scenes/object/character/ship/repo/collision_shapes/l/polygon_ship_prowess.tres" id="2_x7nlk"]
+[ext_resource type="PackedScene" uid="uid://2d2vgwpl273m" path="res://scenes/object/character/player/properties/player_input.tscn" id="3_dacml"]
+[ext_resource type="Material" uid="uid://bxsfn0vu5em6q" path="res://scenes/object/character/ship/repo/materials/material_ship_test_palette.tres" id="3_kc2hf"]
+[ext_resource type="PackedScene" uid="uid://dfu0d4bvp2efu" path="res://scenes/object/character/ship/weapon/weapon.tscn" id="3_tdn2i"]
+[ext_resource type="Texture2D" uid="uid://vk2spbc15rf2" path="res://scenes/object/character/ship/repo/textures/l/texture_ship_prowess.tres" id="5_3x2kd"]
+[ext_resource type="Texture2D" uid="uid://1cp81p1g5cjd" path="res://resources/sprites/light/cone.png" id="7_nr4aa"]
 
-[node name="ShipPlayer" instance=ExtResource("1_2dlpu")]
+[node name="ShipPlayer" type="CharacterBody2D"]
+motion_mode = 1
 script = ExtResource("2_rwhbl")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(5, 0)
+shape = ExtResource("2_x7nlk")
+
+[node name="Weapon" parent="." node_paths=PackedStringArray("carrier") instance=ExtResource("3_tdn2i")]
+position = Vector2(24, -9)
+carrier = NodePath("..")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = ExtResource("3_kc2hf")
+position = Vector2(5, 0)
+texture = ExtResource("5_3x2kd")
+
+[node name="BoostTimer" type="Timer" parent="."]
+
+[node name="PlayerInput" parent="." instance=ExtResource("3_dacml")]
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(37, 0)
+texture = ExtResource("7_nr4aa")
+height = 20.0
+
+[connection signal="mouseMoved" from="PlayerInput" to="." method="_on_player_input_mouse_moved"]

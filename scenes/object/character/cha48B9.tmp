@@ -1,0 +1,38 @@
+[gd_scene load_steps=3 format=3 uid="uid://5it2gmgd8lwe"]
+
+[ext_resource type="Script" path="res://scenes/object/character/character_object.gd" id="1_yboc2"]
+
+[sub_resource type="GDScript" id="GDScript_lbu1t"]
+script/source = "extends CollisionPolygon2D;
+class_name CollisionPolygonEx;
+
+#region signals
+
+#endregion
+
+#region fields
+# Collision shape resource
+@export var convexPolygonShape: ConvexPolygonShape2D = null;
+#endregion
+
+#region methods
+func _ready() -> void:
+	if convexPolygonShape != null:
+		apply_shape();
+
+func apply_shape() -> void:
+	polygon = convexPolygonShape.points;
+
+func set_shape(shape: ConvexPolygonShape2D) -> void:
+	convexPolygonShape = shape;
+	apply_shape();
+#endregion
+"
+
+[node name="CharacterObject" type="CharacterBody2D"]
+script = ExtResource("1_yboc2")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="CollisionPolygonEx" type="CollisionPolygon2D" parent="."]
+script = SubResource("GDScript_lbu1t")

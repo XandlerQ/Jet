@@ -2,17 +2,22 @@
 
 [ext_resource type="Script" path="res://scenes/object/rigid/rigid_object.gd" id="1_45ygg"]
 [ext_resource type="PackedScene" uid="uid://bha43kpuh1bjp" path="res://scenes/object/object_properties/object_property_integrity.tscn" id="1_h1kcy"]
-[ext_resource type="PackedScene" uid="uid://bvdpn3mmfdli3" path="res://scenes/object/object_properties/object_property_resistance.tscn" id="2_4ise6"]
+[ext_resource type="PackedScene" uid="uid://dla68p84jh3vg" path="res://scenes/object/hurtbox/hurtbox.tscn" id="4_0hj45"]
 
 [node name="RigidObject" type="RigidBody2D"]
 gravity_scale = 0.0
 script = ExtResource("1_45ygg")
 
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
-
 [node name="ObjectPropertyIntegrity" parent="." instance=ExtResource("1_h1kcy")]
 
-[node name="ObjectPropertyResistance" parent="." instance=ExtResource("2_4ise6")]
+[node name="Hurtbox" parent="." instance=ExtResource("4_0hj45")]
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Hurtbox"]
+
+[connection signal="broken" from="ObjectPropertyIntegrity" to="." method="_on_object_property_integrity_broken"]
+[connection signal="attacked" from="Hurtbox" to="." method="_on_hurtbox_attacked"]

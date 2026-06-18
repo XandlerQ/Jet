@@ -1,0 +1,8 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://b8yw3iyu71nma"]
+
+[ext_resource type="Shader" path="res://shaders/color_palette_mapping_shader.gdshader" id="1_c6kty"]
+[ext_resource type="Texture2D" uid="uid://bxsi014w8b86y" path="res://resources/sprites/objects/asteroids/atreroid_palette_oranges.png" id="2_sfp6j"]
+
+[resource]
+shader = ExtResource("1_c6kty")
+shader_parameter/palette = ExtResource("2_sfp6j")

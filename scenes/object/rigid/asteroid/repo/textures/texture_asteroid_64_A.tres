@@ -1,11 +1,10 @@
-[gd_resource type="CanvasTexture" load_steps=4 format=3 uid="uid://h4eafnagehh8"]
+[gd_resource type="CanvasTexture" load_steps=4 format=3 uid="uid://cr5kl8tnbb076"]
 
-[ext_resource type="Texture2D" uid="uid://cnnjqnso281fy" path="res://resources/sprites/objects/asteroids/64x64/asteroid_64_A.png" id="1_aokov"]
-[ext_resource type="Texture2D" uid="uid://qipmnw7eqtia" path="res://resources/sprites/objects/asteroids/64x64/asteroid_64_A_n.png" id="2_he1rn"]
-[ext_resource type="Texture2D" uid="uid://dtkxi8m5gl53f" path="res://resources/sprites/objects/asteroids/64x64/asteroid_64_A_s.png" id="3_24pt2"]
+[ext_resource type="Texture2D" uid="uid://du1mn47jyamyh" path="res://resources/sprites/objects/asteroids/64/asteroid_64_a.png" id="1_fjf3f"]
+[ext_resource type="Texture2D" uid="uid://04j1kryblke" path="res://resources/sprites/objects/asteroids/64/asteroid_64_a_n.png" id="2_8c2r3"]
+[ext_resource type="Texture2D" uid="uid://kb4gmmjqsv6a" path="res://resources/sprites/objects/asteroids/64/asteroid_64_a_s.png" id="3_dtirk"]
 
 [resource]
-diffuse_texture = ExtResource("1_aokov")
-normal_texture = ExtResource("2_he1rn")
-specular_texture = ExtResource("3_24pt2")
-texture_filter = 1
+diffuse_texture = ExtResource("1_fjf3f")
+normal_texture = ExtResource("2_8c2r3")
+specular_texture = ExtResource("3_dtirk")

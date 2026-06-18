@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://o6b65jtvhksp"]
+
+[ext_resource type="Texture2D" uid="uid://vbima3p5nn6l" path="res://resources/sprites/tech/testPin.png" id="1_3t1x2"]
+[ext_resource type="Script" path="res://scenes/technical/indicator/indicator.gd" id="1_xvln7"]
+
+[node name="Indicator" type="Sprite2D"]
+texture = ExtResource("1_3t1x2")
+script = ExtResource("1_xvln7")
+
+[node name="SDTimer" type="Timer" parent="."]
+
+[connection signal="timeout" from="SDTimer" to="." method="_on_sd_timer_timeout"]

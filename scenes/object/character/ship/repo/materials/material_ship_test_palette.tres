@@ -1,0 +1,8 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://bxsfn0vu5em6q"]
+
+[ext_resource type="Shader" path="res://shaders/color_palette_mapping_shader.gdshader" id="1_wgvjd"]
+[ext_resource type="Texture2D" uid="uid://58xsfsw80xvt" path="res://resources/sprites/test_ship_palette.png" id="2_p0rvh"]
+
+[resource]
+shader = ExtResource("1_wgvjd")
+shader_parameter/palette = ExtResource("2_p0rvh")

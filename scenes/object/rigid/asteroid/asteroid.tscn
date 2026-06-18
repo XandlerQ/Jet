@@ -1,15 +1,41 @@
-[gd_scene load_steps=6 format=3 uid="uid://barhuleymqofx"]
+[gd_scene load_steps=9 format=3 uid="uid://barhuleymqofx"]
 
-[ext_resource type="PackedScene" uid="uid://dk36w3etpvom6" path="res://scenes/object/rigid/rigid_object.tscn" id="1_qeeca"]
 [ext_resource type="Script" path="res://scenes/object/rigid/asteroid/asteroid.gd" id="2_5xuva"]
-[ext_resource type="Texture2D" uid="uid://050dw6iwx5w8" path="res://scenes/object/rigid/asteroid/repo/textures/texture_asteroid_32_B.tres" id="3_gov64"]
-[ext_resource type="Material" uid="uid://cl53if4bnkoyn" path="res://materials/color_palette_mapping_shader_material.tres" id="3_hvxtr"]
-[ext_resource type="Shape2D" uid="uid://gxrouiihfiyc" path="res://scenes/object/rigid/asteroid/repo/collision_shapes/polygon_asteroid_32_B.tres" id="4_lxtjs"]
+[ext_resource type="Shape2D" uid="uid://d3qsm37co5n70" path="res://scenes/object/rigid/asteroid/repo/collision_shapes/polygon_asteroid_128_d.tres" id="2_06pcq"]
+[ext_resource type="Material" uid="uid://b8yw3iyu71nma" path="res://scenes/object/rigid/asteroid/repo/materials/material_asteroid_test_palette.tres" id="2_my8c1"]
+[ext_resource type="Texture2D" uid="uid://dp2tiirdemak5" path="res://scenes/object/rigid/asteroid/repo/textures/texture_asteroid_128_d.tres" id="4_bln1o"]
+[ext_resource type="PackedScene" uid="uid://bha43kpuh1bjp" path="res://scenes/object/object_properties/object_property_integrity.tscn" id="4_v3i3y"]
+[ext_resource type="Script" path="res://scenes/object/resource_scripts/resource_property_integrity.gd" id="6_gp1gq"]
+[ext_resource type="Script" path="res://scenes/object/hurtbox/hurtbox.gd" id="7_ti1mm"]
 
-[node name="Asteroid" instance=ExtResource("1_qeeca")]
+[sub_resource type="Resource" id="Resource_6qpfl"]
+script = ExtResource("6_gp1gq")
+durability = 2.0
+physicalResistance = 0.0
+alphaResistance = 0.0
+betaResistance = 0.0
+gammaResistance = 0.0
+
+[node name="Asteroid" type="RigidBody2D"]
+mass = 10.0
+gravity_scale = 0.0
 script = ExtResource("2_5xuva")
-texture = ExtResource("3_gov64")
-shape = ExtResource("4_lxtjs")
 
-[node name="Sprite2D" parent="." index="0"]
-material = ExtResource("3_hvxtr")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = ExtResource("2_06pcq")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+material = ExtResource("2_my8c1")
+texture = ExtResource("4_bln1o")
+
+[node name="ObjectPropertyIntegrity" parent="." instance=ExtResource("4_v3i3y")]
+integrityResource = SubResource("Resource_6qpfl")
+
+[node name="Hurtbox" type="Area2D" parent="."]
+script = ExtResource("7_ti1mm")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+
+[connection signal="broken" from="ObjectPropertyIntegrity" to="." method="_on_object_property_integrity_broken"]
+[connection signal="attacked" from="Hurtbox" to="." method="_on_hurtbox_attacked"]

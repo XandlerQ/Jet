@@ -1,0 +1,11 @@
+[gd_resource type="CanvasTexture" load_steps=4 format=3 uid="uid://ckf5xi7ermxuu"]
+
+[ext_resource type="Texture2D" uid="uid://dxkcp87jtdntt" path="res://resources/sprites/objects/ships/m/trident.png" id="1_3paab"]
+[ext_resource type="Texture2D" uid="uid://cxjo4btvyangp" path="res://resources/sprites/objects/ships/m/trident_n.png" id="2_oolc7"]
+[ext_resource type="Texture2D" uid="uid://b2ml85u6fjk6v" path="res://resources/sprites/objects/ships/m/trident_s.png" id="3_jedft"]
+
+[resource]
+diffuse_texture = ExtResource("1_3paab")
+normal_texture = ExtResource("2_oolc7")
+specular_texture = ExtResource("3_jedft")
+texture_filter = 1

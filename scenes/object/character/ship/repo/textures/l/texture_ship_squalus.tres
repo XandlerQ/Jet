@@ -1,0 +1,11 @@
+[gd_resource type="CanvasTexture" load_steps=4 format=3 uid="uid://3as3pefea3am"]
+
+[ext_resource type="Texture2D" uid="uid://c7lpdi463w25x" path="res://resources/sprites/objects/ships/l/squalus.png" id="1_6alow"]
+[ext_resource type="Texture2D" uid="uid://66ophbg15imr" path="res://resources/sprites/objects/ships/l/squalus_n.png" id="2_1a74n"]
+[ext_resource type="Texture2D" uid="uid://dj7uo55g715ci" path="res://resources/sprites/objects/ships/l/squalus_s.png" id="3_j2fso"]
+
+[resource]
+diffuse_texture = ExtResource("1_6alow")
+normal_texture = ExtResource("2_1a74n")
+specular_texture = ExtResource("3_j2fso")
+texture_filter = 1

@@ -1,4 +1,4 @@
-extends CharacterBody2D;
+extends CharacterObject;
 class_name Ship;
 
 #region signals
@@ -6,201 +6,148 @@ class_name Ship;
 #endregion
 
 #region fields
-# Acceleration value
-var acceleration: float = 0;
-# Base rotation speed value
-var baseRotationSpeed: float = 0;
-# Additional rotation speed value
-var additionalRotationSpeed: float = 0;
+# Ship stats resource
+@export var shipResource: ResourceShip = null;
+# Power value
+var power: float = 1250;
 # Fuel reserve value
 var fuel: float = 0;
 # Booster power value
-var boosterPower: float = 0;
+var boosterPower: float = 2500;
 # Booster cooldown
-var boosterCooldown: float = 0;
+var boosterCooldown: float = 1;
+# Booster thrust
+var boosterThrust: float = 0;
 # Drag
-var drag: float = 0;
-# Mass
-var mass: float = 0;
-# Hull node
-@onready var hull: Hull = $"Hull";
-# Wing node
-@onready var wing: Wing = $"Wing";
+var drag: float;
+# Gravibrake
+var gravibrakePower: float = 4;
 # Current spaceship thrust
 var thrust: float = 0;
+# Thrust change speed
+var thrustChangeSpeed: float = 5.;
+# Max thrust
+var forwardThrust: float = 1.0;
+# Min thrust
+var backwardThrust: float = -0.6;
+# Overcharge thrust
+var overchargeThrustMultiplier: float = 1.6;
+# Target thrust
+var targetThrust: float = 0:
+	set = set_target_thrust;
+# Target thrust states
+enum targetThrustStates {
+	ZERO,
+	FWD,
+	BWD,
+	OFWD,
+	OBWD
+}
+# Rotation power
+var rotationPower: float = 15000;
+# Rotation thrust
+var rotationThrust: float = 0;
+# Max rotation thrust
+var maxRotationThrust: float = 1.;
+# Rotation thrust change speed
+var rotationThrustChangeSpeed: float = 10;
+# Target rotation thrust
+var targetRotationThrust: float = 0.: 
+	set = set_target_rotation_thrust;
+# Rotation drag
+var rotationDrag: float;
 # Boost timer
 @onready var boostTimer: Timer = $BoostTimer;
-# Hull collision polygon node
-@onready var hullCollisionPolygon: CollisionPolygon2D = $HullCollisionPolygon;
-# Wing collision polygon node
-@onready var wingCollisionPolygon: CollisionPolygon2D = $WingCollisionPolygon;
 #endregion
 
 #region methods
-func _ready():	
-	# Setup hull and wing sprites initial rotation
-	hull.rotation = PI/2;
-	wing.rotation = PI/2;
-	# Setup hull and wing collision shapes initial rotation
-	hullCollisionPolygon.rotation = PI/2;
-	wingCollisionPolygon.rotation = PI/2;
-	
-	recalculate_ship_stats();
-	
-	ShipComponentManager.set_ship_hull(self, 3);
-	ShipComponentManager.set_ship_wing(self, 3);
-	
+func _ready() -> void:
+	super();
+	drag = 3 * linearSize * linearSize / 4;
+	rotationDrag = 8;
 	# Setup booster timer
 	boostTimer.one_shot = true;
 	boostTimer.wait_time = boosterCooldown;
 
-func set_hull_canvas_texture_path(path: String) -> void:
-	hull.set_canvas_texture_path(path);
+func get_collision_virtual_rotational_speed(collisionDistance: float, collisionDirection: Vector2) -> Vector2:
+	return rotational_speed_hat_function(collisionDistance) * rotationSpeed * collisionDistance * collisionDirection.rotated(PI/2.) + 2 * collisionDistance * rotationThrust * rotationPower * collisionDirection.rotated(PI/2.) / 15000;
 
-func set_hull_canvas_texture(resource: CanvasTexture) -> void:
-	hull.set_canvas_texture(resource);
+func normalize_target_thrust() -> void:
+	var maxThrust: float = forwardThrust * overchargeThrustMultiplier;
+	var minThrust: float = backwardThrust * overchargeThrustMultiplier;
+	if targetThrust > maxThrust:
+		targetThrust = maxThrust;
+	if targetThrust < minThrust:
+		targetThrust = minThrust;
 
-func set_hull_collision_shape_path(path: String) -> void:
-	set_hull_collision_shape(load(path));
+func set_target_thrust(tgtT: float) -> void:
+	targetThrust = tgtT;
+	normalize_target_thrust();
 
-func set_hull_collision_shape(collisionShape: ConvexPolygonShape2D) -> void:
-	hullCollisionPolygon.polygon = collisionShape.points;
+func set_target_thrust_state(state: targetThrustStates) -> void:
+	match state:
+		targetThrustStates.ZERO: targetThrust = 0;
+		targetThrustStates.FWD: targetThrust = forwardThrust;
+		targetThrustStates.BWD: targetThrust = backwardThrust;
+		targetThrustStates.OFWD: targetThrust = forwardThrust * overchargeThrustMultiplier;
+		targetThrustStates.OBWD: targetThrust = backwardThrust * overchargeThrustMultiplier;
 
-func set_wing_canvas_texture_path(path: String) -> void:
-	wing.set_canvas_texture_path(path);
+func set_target_rotation_thrust(tgtRT: float) -> void:
+	targetRotationThrust = tgtRT;
+	normalize_target_rotation_thrust();
 
-func set_wing_canvas_texture(resource: CanvasTexture) -> void:
-	wing.set_canvas_texture(resource);
+func add_to_target_rotation_thrust(value: float) -> void:
+	targetRotationThrust += value;
+	normalize_target_rotation_thrust();
 
-func set_wing_collision_shape_path(path: String) -> void:
-	set_wing_collision_shape(load(path));
+func normalize_target_rotation_thrust() -> void:
+	if targetRotationThrust > maxRotationThrust:
+		targetRotationThrust = maxRotationThrust;
+	if targetRotationThrust < -maxRotationThrust:
+		targetRotationThrust = -maxRotationThrust;
 
-func set_wing_collision_shape(collisionShape: ConvexPolygonShape2D) -> void:
-	wingCollisionPolygon.polygon = collisionShape.points;
+#region dynamics
 
-func set_hull_integrity_resource_path(path: String) -> void:
-	hull.set_integrity_resource_path(path);
+func accelerate(delta: float) -> void:
+	add_to_speed(delta * ((thrust * power / mass) * Vector2.RIGHT.rotated(rotation) - drag * speed / mass))
 
-func set_hull_integrity_resource(resource: ResourcePropertyIntegrity) -> void:
-	hull.set_integrity_resource(resource);
+func gravibrake(delta: float) -> void:
+	var speedModule: float = speed.length();
+	if speedModule < 0.00001:
+		set_speed(Vector2.ZERO);
+	else:
+		add_to_speed(-delta * gravibrakePower * speed / mass);
 
-func set_hull_resistance_resource_path(path: String) -> void:
-	hull.set_resistance_resource_path(path);
+func update_thrust(delta: float) -> void:
+	var thrustDelta: float = targetThrust - thrust;
+	if abs(thrustDelta) < delta * thrustChangeSpeed:
+		thrust = targetThrust;
+	else:
+		thrust += sign(thrustDelta) * delta * thrustChangeSpeed;
 
-func set_hull_resistance_resource(resource: ResourcePropertyResistance) -> void:
-	hull.set_resistance_resource(resource);
+func update_rotation_thrust(delta: float) -> void:
+	var rotationThrustDelta: float = targetRotationThrust - rotationThrust;
+	if abs(rotationThrustDelta) < delta * rotationThrustChangeSpeed:
+		rotationThrust = targetRotationThrust;
+	else:
+		rotationThrust += sign(rotationThrustDelta) * delta * rotationThrustChangeSpeed;
 
-func set_hull_stats_resource_path(path: String) -> void:
-	hull.set_stats_resource_path(path);
+func update_rotation(delta: float) -> void:
+	var rotationSpeedDelta: float = delta * (rotationPower * rotationThrust / momentOfInertia - rotationDrag * rotationSpeed);
+	if rotationSpeedDelta * rotationSpeed < 0. and abs(rotationSpeedDelta) > abs(rotationSpeed):
+		rotationSpeed = 0;
+	else:
+		rotationSpeed += rotationSpeedDelta;
+	rotation += delta * rotationSpeed;
 
-func set_hull_stats_resource(resource: ResourceShipComponentStats) -> void:
-	hull.set_stats_resource(resource);
 
-func set_wing_integrity_resource_path(path: String) -> void:
-	wing.set_integrity_resource_path(path);
+#func lower_booster_thrust(delta: float) -> void:
+	#
 
-func set_wing_integrity_resource(resource: ResourcePropertyIntegrity) -> void:
-	wing.set_integrity_resource(resource);
-
-func set_wing_resistance_resource_path(path: String) -> void:
-	wing.set_resistance_resource_path(path);
-
-func set_wing_resistance_resource(resource: ResourcePropertyResistance) -> void:
-	wing.set_resistance_resource(resource);
-
-func set_wing_stats_resource_path(path: String) -> void:
-	wing.set_stats_resource_path(path);
-
-func set_wing_stats_resource(resource: ResourceShipComponentStats) -> void:
-	wing.set_stats_resource(resource);
-
-func recalculate_ship_stats():
-	acceleration = hull.componentStatsNode.acceleration + wing.componentStatsNode.acceleration;
-	baseRotationSpeed = hull.componentStatsNode.baseRotationSpeed + wing.componentStatsNode.baseRotationSpeed;
-	additionalRotationSpeed = hull.componentStatsNode.additionalRotationSpeed + wing.componentStatsNode.additionalRotationSpeed;
-	fuel = hull.componentStatsNode.fuel + wing.componentStatsNode.fuel;
-	boosterPower = hull.componentStatsNode.boosterPower + wing.componentStatsNode.boosterPower;
-	boosterCooldown = hull.componentStatsNode.boosterCooldown + wing.componentStatsNode.boosterCooldown;
-	drag = hull.componentStatsNode.drag + wing.componentStatsNode.drag;
-	mass = hull.componentStatsNode.mass + wing.componentStatsNode.mass;
-
-func add_to_thrust(value: float) -> void:
-	thrust += value;
-	normalizeThrust();
-
-func normalizeThrust() -> void:
-	if (thrust > 1.0): 
-		thrust = 1.0;
-		return;
-	if (thrust < -0.5):
-		thrust = -0.5;
-		return;
-
-#region rotation
-static func normalize_angle(angle: float) -> float:
-	var normalizedAngle = angle;
-	while (normalizedAngle > PI): normalizedAngle -= 2 * PI;
-	while (normalizedAngle < -PI): normalizedAngle += 2 * PI;
-	return normalizedAngle;
-
-static func get_ot_angle(delta: float, origin: float, target: float, baseRotSpeed: float, additionalRotSpeed: float) -> float:
-	var angleDifference: float = target - origin;
-	var newTarget: float = target; # New target angle
-	# If angle difference curve contains -PI to PI jump,
-	# define new target angles that are outside normal range
-	if (angleDifference > PI): newTarget -= 2 * PI;
-	if (angleDifference < -PI): newTarget += 2 * PI;
-	
-	var distance: float = newTarget - origin; # Angle difference curve length
-	if is_equal_approx(distance, 0.0): return target; #If already close to target, return target
-	
-	var distanceSign := signf(distance); #Angle distance sign
-	# Calculate rotation speed = [base rotation speed in the correct direction]
-	# + [relative rotation speed] * [distance factor]
-	var rotationSpeed: float = distanceSign * baseRotSpeed + additionalRotSpeed * (distance / PI); 
-	# Calculate new rotation angle taking delta into account
-	var rotationAngle = origin + rotationSpeed * delta;
-	
-	# Handle possible overshot
-	if distanceSign == 1.0: rotationAngle = min(rotationAngle, newTarget);
-	elif distanceSign == -1.0: rotationAngle = max(rotationAngle, newTarget);
-	
-	# Normalize resulting rotation angle (needed due to new target angle possibly being outside normal range)
-	var normalizedRotationAngle: float = normalize_angle(rotationAngle);
-	
-	# Return resulting rotation angle
-	return normalizedRotationAngle;
-
-func get_ot_angle_self(delta: float, targetAngle: float):
-	return Ship.get_ot_angle(delta, rotation, targetAngle, baseRotationSpeed, additionalRotationSpeed);
-
-func get_angle_to_rotate_to_target_angle(delta: float, targetAngle: float) -> float:
-	return get_ot_angle_self(delta, targetAngle);
-
-func rotate_to_target_angle(delta: float, targetAngle: float) -> void:
-	rotation = get_ot_angle_self(delta, targetAngle);
-
-func get_angle_to_rotate_to_target(delta: float, target: Vector2):
-	var differenceVector: Vector2 = target - global_position;
-	var targetAngle = differenceVector.angle();
-	return get_ot_angle_self(delta, targetAngle);
-
-func rotate_to_target(delta: float, target: Vector2):
-	var differenceVector: Vector2 = target - global_position;
-	var targetAngle = differenceVector.angle();
-	rotation = get_ot_angle_self(delta, targetAngle);
+func apply_booster(direction: Vector2) -> void:
+	#TODO check if timer is running
+	apply_central_impulse(direction * boosterPower);
+	#TODO start cooldown timer
 #endregion
 
-#region velocity
-
-func apply_accelerations(delta: float):
-	var velocityModule: float = velocity.length();
-	velocity += delta * (acceleration * thrust * Vector2.RIGHT.rotated(rotation) - drag * velocityModule * velocity)
-#endregion
-
-func _on_hull_stats_values_changed():
-	recalculate_ship_stats();
-
-func _on_wing_stats_values_changed():
-	recalculate_ship_stats();
 #endregion

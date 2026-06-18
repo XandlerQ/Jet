@@ -1,0 +1,15 @@
+[gd_scene load_steps=6 format=3 uid="uid://barhuleymqofx"]
+
+[ext_resource type="PackedScene" uid="uid://dk36w3etpvom6" path="res://scenes/object/rigid/rigid_object.tscn" id="1_qeeca"]
+[ext_resource type="Script" path="res://scenes/object/rigid/asteroid/asteroid.gd" id="2_5xuva"]
+[ext_resource type="Texture2D" uid="uid://050dw6iwx5w8" path="res://scenes/object/rigid/asteroid/repo/textures/texture_asteroid_32_B.tres" id="3_gov64"]
+[ext_resource type="Material" uid="uid://cl53if4bnkoyn" path="res://materials/color_palette_mapping_shader_material.tres" id="3_hvxtr"]
+[ext_resource type="Shape2D" uid="uid://gxrouiihfiyc" path="res://scenes/object/rigid/asteroid/repo/collision_shapes/polygon_asteroid_32_B.tres" id="4_lxtjs"]
+
+[node name="Asteroid" instance=ExtResource("1_qeeca")]
+script = ExtResource("2_5xuva")
+texture = ExtResource("3_gov64")
+shape = ExtResource("4_lxtjs")
+
+[node name="Sprite2D" parent="." index="0"]
+material = ExtResource("3_hvxtr")

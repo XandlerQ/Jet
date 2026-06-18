@@ -1,0 +1,14 @@
+CollisionShape2D
+Sprite2D
+CharacterBody2D
+Node2D
+CollisionPolygon2D
+CPUParticles2D
+GPUParticles2D
+DirectionalLight2D
+WorldEnvironment
+PointLight2D
+LightOccluder2D
+Hurtbox
+Area2D
+ProjectileContainer

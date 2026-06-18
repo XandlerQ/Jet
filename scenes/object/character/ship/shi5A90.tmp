@@ -1,0 +1,23 @@
+[gd_scene load_steps=8 format=3 uid="uid://tmcofr23guf3"]
+
+[ext_resource type="PackedScene" uid="uid://5it2gmgd8lwe" path="res://scenes/object/character/character_object.tscn" id="1_qh1ik"]
+[ext_resource type="Script" path="res://scenes/object/character/ship/ship.gd" id="2_voou7"]
+[ext_resource type="Shader" path="res://shaders/color_palette_mapping_shader.gdshader" id="3_lyt00"]
+[ext_resource type="Texture2D" uid="uid://d4elchosref1n" path="res://scenes/object/character/ship/repo/textures/l/texture_ship_voidslicer.tres" id="3_meevq"]
+[ext_resource type="Texture2D" uid="uid://s8cppxrbqu6r" path="res://resources/sprites/ship_mask_palette_std_white_red.png" id="4_ivprh"]
+[ext_resource type="Shape2D" uid="uid://ckmhcrwt46f83" path="res://scenes/object/character/ship/repo/collision_shapes/l/polygon_ship_voidslicer.tres" id="4_yh0k8"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4cusv"]
+shader = ExtResource("3_lyt00")
+shader_parameter/palette = ExtResource("4_ivprh")
+
+[node name="Ship" instance=ExtResource("1_qh1ik")]
+script = ExtResource("2_voou7")
+statsResource = null
+convexPolygonShape = ExtResource("4_yh0k8")
+
+[node name="Sprite2D" parent="." index="0"]
+material = SubResource("ShaderMaterial_4cusv")
+texture = ExtResource("3_meevq")
+
+[node name="BoostTimer" type="Timer" parent="." index="2"]

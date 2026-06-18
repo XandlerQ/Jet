@@ -1,0 +1,91 @@
+[gd_scene load_steps=12 format=3 uid="uid://wvfj30jyjp53"]
+
+[ext_resource type="Script" path="res://scenes/projectile/beta_missile.gd" id="1_kqasy"]
+[ext_resource type="Texture2D" uid="uid://c6pysm1jhpc0v" path="res://resources/sprites/objects/projectiles/blaster_missle-sheet.png" id="2_bdgwd"]
+[ext_resource type="Script" path="res://scenes/technical/attack/damage.gd" id="2_ehu3s"]
+[ext_resource type="Script" path="res://scenes/projectile/resource_scripts/resource_projectile.gd" id="2_ltmcp"]
+[ext_resource type="Texture2D" uid="uid://dddsgw00ybegd" path="res://resources/sprites/light/49465361-1a53ec80-f806-11e8-9dd3-ae09aed0de3f.png" id="3_vwbn8"]
+
+[sub_resource type="Resource" id="Resource_cjdmq"]
+script = ExtResource("2_ehu3s")
+physicalDamage = 1.0
+alphaDamage = 0.0
+betaDamage = 0.0
+gammaDamage = 0.0
+
+[sub_resource type="Resource" id="Resource_ugpwp"]
+script = ExtResource("2_ltmcp")
+damage = SubResource("Resource_cjdmq")
+impulse = 10.0
+lifetime = 3.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_mf85x"]
+radius = 3.0
+height = 10.0
+
+[sub_resource type="Animation" id="Animation_lsvj1"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_4kpgq"]
+resource_name = "idle"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_lx8lt"]
+_data = {
+"RESET": SubResource("Animation_lsvj1"),
+"idle": SubResource("Animation_4kpgq")
+}
+
+[node name="BetaMissile" type="Area2D"]
+script = ExtResource("1_kqasy")
+projectileResource = SubResource("Resource_ugpwp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(2, 0)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_mf85x")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_bdgwd")
+vframes = 4
+
+[node name="SDTimer" type="Timer" parent="."]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_lx8lt")
+}
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+color = Color(0.2511, 0.93, 0.873425, 1)
+texture = ExtResource("3_vwbn8")
+texture_scale = 0.5
+height = 10.0
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="timeout" from="SDTimer" to="." method="_on_sd_timer_timeout"]

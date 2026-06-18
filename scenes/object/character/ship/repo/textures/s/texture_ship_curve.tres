@@ -1,0 +1,11 @@
+[gd_resource type="CanvasTexture" load_steps=4 format=3 uid="uid://cunj6st1jatpf"]
+
+[ext_resource type="Texture2D" uid="uid://d1snfrhqcx0v6" path="res://resources/sprites/objects/ships/s/curve.png" id="1_m3x0h"]
+[ext_resource type="Texture2D" uid="uid://cv65nmtdqbv0t" path="res://resources/sprites/objects/ships/s/curve_n.png" id="2_yxjmv"]
+[ext_resource type="Texture2D" uid="uid://b0gi4bkpeioc2" path="res://resources/sprites/objects/ships/s/curve_s.png" id="3_2hxtj"]
+
+[resource]
+diffuse_texture = ExtResource("1_m3x0h")
+normal_texture = ExtResource("2_yxjmv")
+specular_texture = ExtResource("3_2hxtj")
+texture_filter = 1

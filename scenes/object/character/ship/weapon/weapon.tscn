@@ -1,0 +1,17 @@
+[gd_scene load_steps=5 format=3 uid="uid://dfu0d4bvp2efu"]
+
+[ext_resource type="Texture2D" uid="uid://caufr7i6f0uyr" path="res://scenes/object/character/ship/weapon/repo/textures/texture_weapon_beta.tres" id="1_a56ej"]
+[ext_resource type="Script" path="res://scenes/object/character/ship/weapon/weapon.gd" id="1_i4tnp"]
+[ext_resource type="PackedScene" uid="uid://wvfj30jyjp53" path="res://scenes/projectile/beta_missile.tscn" id="3_l3gfk"]
+[ext_resource type="Script" path="res://scenes/projectile/projectile_container.gd" id="3_lgymq"]
+
+[node name="Weapon" type="Sprite2D"]
+texture = ExtResource("1_a56ej")
+script = ExtResource("1_i4tnp")
+projectileScene = ExtResource("3_l3gfk")
+
+[node name="Barrel" type="Marker2D" parent="."]
+position = Vector2(9, 1.5)
+
+[node name="ProjectileContainer" type="Node2D" parent="."]
+script = ExtResource("3_lgymq")

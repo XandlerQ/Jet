@@ -1,0 +1,10 @@
+[gd_resource type="CanvasTexture" load_steps=4 format=3 uid="uid://caufr7i6f0uyr"]
+
+[ext_resource type="Texture2D" uid="uid://ba8x4whuqkqrl" path="res://resources/sprites/objects/ships/weapons/beta_gun.png" id="1_q4wk0"]
+[ext_resource type="Texture2D" uid="uid://bxokyhh5eggco" path="res://resources/sprites/objects/ships/weapons/beta_gun_n.png" id="2_8mqc7"]
+[ext_resource type="Texture2D" uid="uid://vji6ygbjuyyk" path="res://resources/sprites/objects/ships/weapons/beta_gun_s.png" id="3_7bymi"]
+
+[resource]
+diffuse_texture = ExtResource("1_q4wk0")
+normal_texture = ExtResource("2_8mqc7")
+specular_texture = ExtResource("3_7bymi")

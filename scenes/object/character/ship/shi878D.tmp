@@ -1,0 +1,23 @@
+[gd_scene load_steps=6 format=3 uid="uid://cegsy3u8u87sb"]
+
+[ext_resource type="Script" path="res://scenes/object/character/ship/ship.gd" id="1_hwvpm"]
+[ext_resource type="Shader" path="res://shaders/color_palette_mapping_shader.gdshader" id="2_iwb52"]
+[ext_resource type="Texture2D" uid="uid://s8cppxrbqu6r" path="res://resources/sprites/ship_mask_palette_std_white_red.png" id="3_5y5jn"]
+[ext_resource type="Texture2D" uid="uid://d4elchosref1n" path="res://scenes/object/character/ship/repo/textures/l/texture_ship_voidslicer.tres" id="4_tm04q"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hnu23"]
+shader = ExtResource("2_iwb52")
+shader_parameter/palette = ExtResource("3_5y5jn")
+
+[node name="Ship" type="CharacterBody2D"]
+motion_mode = 1
+script = ExtResource("1_hwvpm")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_hnu23")
+texture = ExtResource("4_tm04q")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(-27, -25, 28, 0, -27, 25)
+
+[node name="BoostTimer" type="Timer" parent="."]

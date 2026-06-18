@@ -1,42 +1,85 @@
-[gd_scene load_steps=8 format=3 uid="uid://brj8fkcwm0pw8"]
+[gd_scene format=3 uid="uid://brj8fkcwm0pw8"]
 
-[ext_resource type="PackedScene" uid="uid://cxtdpla181ft7" path="res://assets/smoother/smoother.tscn" id="1_iegks"]
+[ext_resource type="Script" uid="uid://c3w0miry4usrv" path="res://scenes/level/test_level.gd" id="1_xw6jr"]
 [ext_resource type="Texture2D" uid="uid://ci6qqxoyqohex" path="res://resources/sprites/backgrounds/test_space_background.png" id="2_ffqy3"]
 [ext_resource type="PackedScene" uid="uid://cnsqrkhqogqcl" path="res://scenes/object/static/space_station/test_space_station.tscn" id="3_6piym"]
 [ext_resource type="Texture2D" uid="uid://dddsgw00ybegd" path="res://resources/sprites/light/49465361-1a53ec80-f806-11e8-9dd3-ae09aed0de3f.png" id="4_ndt0i"]
-[ext_resource type="PackedScene" uid="uid://cpdfmnb147sd1" path="res://scenes/object/character/player/ship_player.tscn" id="5_auwrt"]
 [ext_resource type="PackedScene" uid="uid://dnccwytjqfnyv" path="res://scenes/camera/player_camera_node.tscn" id="6_iwm1y"]
 [ext_resource type="PackedScene" uid="uid://barhuleymqofx" path="res://scenes/object/rigid/asteroid/asteroid.tscn" id="7_pmaad"]
+[ext_resource type="PackedScene" uid="uid://cpdfmnb147sd1" path="res://scenes/object/character/player/ship_player.tscn" id="8_jigdt"]
 
-[node name="TestLevel" type="Node2D"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lclyg"]
 
-[node name="Smoother" parent="." instance=ExtResource("1_iegks")]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_rtko3"]
+noise_type = 3
+seed = 583
+frequency = 0.0052
+fractal_type = 2
+fractal_lacunarity = 1.8
+fractal_gain = 0.45
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_4mios"]
+noise = SubResource("FastNoiseLite_rtko3")
+seamless = true
+
+[sub_resource type="Environment" id="Environment_e8iaq"]
+background_mode = 3
+glow_enabled = true
+glow_bloom = 0.15
+
+[node name="TestLevel" type="Node2D" unique_id=768136738]
+script = ExtResource("1_xw6jr")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=835682459]
 layer = -1
+follow_viewport_enabled = true
 
-[node name="SpaceBackground" type="Sprite2D" parent="CanvasLayer"]
+[node name="Parallax2D" type="Parallax2D" parent="CanvasLayer" unique_id=1318730529]
+scroll_scale = Vector2(0.1, 0.1)
+
+[node name="SpaceBackground" type="Sprite2D" parent="CanvasLayer/Parallax2D" unique_id=966060546]
+self_modulate = Color(0.564962, 0.564962, 0.564962, 1)
 texture_filter = 1
 texture_repeat = 2
+position = Vector2(-29, -79)
 texture = ExtResource("2_ffqy3")
 region_enabled = true
 region_rect = Rect2(0, 0, 5000, 5000)
 
-[node name="TestSpaceStation" parent="." instance=ExtResource("3_6piym")]
+[node name="TestSpaceStation" parent="." unique_id=1341987379 instance=ExtResource("3_6piym")]
 position = Vector2(80, -44)
 
-[node name="CanvasModulate" type="CanvasModulate" parent="."]
-texture_filter = 1
-color = Color(0.419608, 0.419608, 0.419608, 1)
-
-[node name="Light" type="PointLight2D" parent="."]
-position = Vector2(160, -135)
+[node name="Light" type="PointLight2D" parent="." unique_id=2139675248]
+position = Vector2(229, -6)
 texture = ExtResource("4_ndt0i")
+height = 20.0
 
-[node name="ShipPlayer" parent="." instance=ExtResource("5_auwrt")]
-position = Vector2(96, 15)
+[node name="PlayerCameraNode" parent="." unique_id=1565543653 instance=ExtResource("6_iwm1y")]
 
-[node name="PlayerCameraNode" parent="." instance=ExtResource("6_iwm1y")]
+[node name="AsteroidContainer" type="Node2D" parent="." unique_id=1827506051]
 
-[node name="Asteroid" parent="." instance=ExtResource("7_pmaad")]
-position = Vector2(172, 6)
+[node name="Asteroid" parent="AsteroidContainer" unique_id=2042507215 instance=ExtResource("7_pmaad")]
+position = Vector2(195, 87)
+rotation = 0.785397
+mass = 100.0
+size = 3
+
+[node name="ShipPlayer" parent="." unique_id=683694549 instance=ExtResource("8_jigdt")]
+position = Vector2(283, 53)
+
+[node name="Parallax2D" type="Parallax2D" parent="." unique_id=286790577]
+scroll_scale = Vector2(1.1, 1.1)
+repeat_size = Vector2(512, 512)
+repeat_times = 20
+
+[node name="FogTest" type="Sprite2D" parent="Parallax2D" unique_id=196132885]
+modulate = Color(0.34083, 0.3087, 0.63, 0.431373)
+material = SubResource("ShaderMaterial_lclyg")
+texture = SubResource("NoiseTexture2D_4mios")
+
+[node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=1801028025]
+texture_filter = 1
+color = Color(0.32, 0.32, 0.32, 1)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=124734741]
+environment = SubResource("Environment_e8iaq")

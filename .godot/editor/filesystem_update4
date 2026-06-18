@@ -1,0 +1,4 @@
+res://scenes/level/test_level.tscn
+res://shaders/color_palette_mapping_shader.gdshader
+res://scenes/object/static/space_station/repo/tileset_space_station.tres
+res://scenes/level/test_level.gdshader

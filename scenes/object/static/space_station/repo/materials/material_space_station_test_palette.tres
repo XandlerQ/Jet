@@ -1,0 +1,8 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://borxf6l3hv0ew"]
+
+[ext_resource type="Shader" path="res://shaders/color_palette_mapping_shader.gdshader" id="1_t6xfp"]
+[ext_resource type="Texture2D" uid="uid://buj0iiie88t3w" path="res://resources/sprites/objects/spacestation/space_station_mask_palette_test.png" id="2_ord8i"]
+
+[resource]
+shader = ExtResource("1_t6xfp")
+shader_parameter/palette = ExtResource("2_ord8i")

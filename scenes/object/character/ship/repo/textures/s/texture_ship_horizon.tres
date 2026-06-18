@@ -1,0 +1,11 @@
+[gd_resource type="CanvasTexture" load_steps=4 format=3 uid="uid://vq7vpwaa7yq8"]
+
+[ext_resource type="Texture2D" uid="uid://eu4q0dhikkkr" path="res://resources/sprites/objects/ships/s/horizon.png" id="1_mmoy2"]
+[ext_resource type="Texture2D" uid="uid://cf6y57co3hlpe" path="res://resources/sprites/objects/ships/s/horizon_n.png" id="2_eoipf"]
+[ext_resource type="Texture2D" uid="uid://b32ty2w7j6r3g" path="res://resources/sprites/objects/ships/s/horizon_s.png" id="3_mpq7t"]
+
+[resource]
+diffuse_texture = ExtResource("1_mmoy2")
+normal_texture = ExtResource("2_eoipf")
+specular_texture = ExtResource("3_mpq7t")
+texture_filter = 1
